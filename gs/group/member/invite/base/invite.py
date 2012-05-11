@@ -24,11 +24,11 @@ from inviter import Inviter
 from notifymessages import default_message, default_subject
 from audit import Auditor, INVITE_NEW_USER, INVITE_OLD_USER, INVITE_EXISTING_MEMBER
 
-import gs.group.member.invite # For the abscompath call below
+import gs.group.member.invite.base # For the abscompath call below
 
 class InviteEditProfileForm(GroupForm):
     label = u'Invite a New Group Member'
-    pageTemplateFileName = abscompath(gs.group.member.invite,
+    pageTemplateFileName = abscompath(gs.group.member.invite.base,
                                       'browser/templates/edit_profile_invite.pt')
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 

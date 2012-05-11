@@ -5,7 +5,7 @@ from version import get_version
 
 version = get_version()
 
-setup(name='gs.group.member.invite',
+setup(name='gs.group.member.invite.base',
     version=version,
     description="The pages that are required to invite people to "\
       "join GroupServer groups.",
@@ -28,7 +28,7 @@ setup(name='gs.group.member.invite',
     url='http://groupserver.org',
     license='ZPL',
     packages=find_packages(exclude=['ez_setup']),
-    namespace_packages=['gs', 'gs.group', 'gs.group.member'],
+    namespace_packages=['gs', 'gs.group', 'gs.group.member', 'gs.group.member.invite'],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
