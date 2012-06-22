@@ -2,6 +2,8 @@
 import pytz
 from datetime import  datetime
 import sqlalchemy as sa
+from zope.sqlalchemy import mark_session
+from gs.database import getTable, getSession
 
 class InvitationQuery(object):
     def __init__(self, da):
@@ -17,13 +19,15 @@ class InvitationQuery(object):
         
         d = datetime.utcnow().replace(tzinfo=pytz.utc)
         i = self.userInvitationTable.insert()
-        i.execute(invitation_id = invitiationId,
-          site_id = siteId,
-          group_id = groupId,
-          user_id = userId,
-          inviting_user_id = invtUsrId,
-          invitation_date = d,
-          initial_invite = initialInvite)
+        session = getSession()
+        session.execute(i, params={'invitation_id': invitiationId,
+                                   'site_id': siteId,
+                                   'group_id': groupId,
+                                   'user_id': userId,
+                                   'inviting_user_id': invtUsrId,
+                                   'invitation_date': d,
+                                   'initial_invite': initialInvite})
+        mark_changed(session)
 
     def marshal_invite(self, x):
         retval = {
@@ -52,7 +56,8 @@ class InvitationQuery(object):
         s.append_whereclause(uit.c.invitation_id == invitationId)
         if current:
             s.append_whereclause(uit.c.response_date == None)
-        r = s.execute()
+        session = getSession()
+        r = session.execute(s)
 
         if r.rowcount:
             x = r.fetchone()
@@ -65,14 +70,14 @@ class InvitationQuery(object):
         assert siteId
         assert userId
         uit = self.userInvitationTable
-        s = uit.select()
+        s = uit.select(order_by=sa.desc(uit.c.invitation_date))
         s.append_whereclause(uit.c.site_id  == siteId)
         s.append_whereclause(uit.c.user_id  == userId)
         s.append_whereclause(uit.c.response_date == None)
         s.append_whereclause(uit.c.withdrawn_date  == None)
-        s.order_by(sa.desc(uit.c.invitation_date))
 
-        r = s.execute()
+        session = getSession()
+        r = session.execute(s)
 
         seen = []
         retval = []
@@ -92,13 +97,14 @@ class InvitationQuery(object):
         cols = [uit.c.site_id, uit.c.group_id, uit.c.user_id, 
                 uit.c.inviting_user_id, uit.c.invitation_date,
                 uit.c.response_date, uit.c.accepted]
-        s = sa.select(cols, distinct=True)
+        s = sa.select(cols, distinct=True,
+                            order_by=sa.desc(uit.c.invitation_date))
         s.append_whereclause(uit.c.site_id  == siteId)
         s.append_whereclause(uit.c.user_id  == userId)
         s.append_whereclause(uit.c.response_date != None)
-        s.order_by(sa.desc(uit.c.invitation_date))
 
-        r = s.execute()
+        session = getSession()
+        r = session.execute(s)
 
         retval = []
         if r.rowcount:
@@ -112,12 +118,13 @@ class InvitationQuery(object):
         uit = self.userInvitationTable
         cols = [uit.c.site_id, uit.c.group_id, uit.c.user_id, 
                 uit.c.invitation_date, uit.c.response_date, uit.c.accepted]
-        s = sa.select(cols, distinct=True)
+        s = sa.select(cols, distinct=True,
+                            order_by=sa.desc(uit.c.invitation_date))
         s.append_whereclause(uit.c.site_id  == siteId)
         s.append_whereclause(uit.c.inviting_user_id  == invitingUserId)
-        s.order_by(sa.desc(uit.c.invitation_date))
 
-        r = s.execute()
+        session = getSession()
+        r = session.execute(s)
 
         retval = []
         if r.rowcount:
@@ -130,10 +137,11 @@ class InvitationQuery(object):
         s = it.select()
         s.append_whereclause(it.c.response_date == None)
         s.append_whereclause(it.c.withdrawn_date  == None)
-        
         s.append_whereclause(it.c.user_id == userInfo.id )
 
-        r = s.execute()
+        session = getSession()
+        r = session.execute(s)        
+
         assert r.rowcount < 2
         if r.rowcount:
             x = r.fetchone()
@@ -162,7 +170,11 @@ class InvitationQuery(object):
           uit.c.user_id  == userId)
         v = {uit.c.response_date: d, uit.c.accepted: status}
         u = uit.update(c, values=v)
-        u.execute()
+
+        session = getSession()
+        session.execute(u)
+        
+        mark_changed(session)
 
     def withdraw_invitation(self, siteId, groupId, userId, withdrawingId):
         assert siteId
@@ -180,5 +192,8 @@ class InvitationQuery(object):
           uit.c.withdrawn_date == None)
         v = {uit.c.withdrawn_date: d, uit.c.withdrawing_user_id: withdrawingId}
         u = uit.update(c, values=v)
-        u.execute()
+
+        session = getSession()
+        session.execute(u)
         
+        mark_changed(session)

@@ -34,6 +34,7 @@ setup(name='gs.group.member.invite.base',
     install_requires=[
         'setuptools',
         'gs.content.form',
+        'gs.database',
         'gs.group.member.base',
         'gs.help',
         'gs.profile.email.base',

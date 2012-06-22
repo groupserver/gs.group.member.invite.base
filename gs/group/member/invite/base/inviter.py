@@ -20,8 +20,7 @@ class Inviter(object):
         
     @Lazy
     def invitationQuery(self):
-        da = self.context.zsqlalchemy
-        retval = InvitationQuery(da)
+        retval = InvitationQuery()
         return retval
 
     def create_invitation(self, data, initial):
