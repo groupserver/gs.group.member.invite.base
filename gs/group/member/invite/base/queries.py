@@ -2,12 +2,12 @@
 import pytz
 from datetime import  datetime
 import sqlalchemy as sa
-from zope.sqlalchemy import mark_session
+from zope.sqlalchemy import mark_changed
 from gs.database import getTable, getSession
 
 class InvitationQuery(object):
-    def __init__(self, da):
-        self.userInvitationTable = da.createTable('user_group_member_invitation')
+    def __init__(self):
+        self.userInvitationTable = getTable('user_group_member_invitation')
 
     def add_invitation(self, invitiationId, siteId, groupId, userId, 
                        invtUsrId, initialInvite = False):
