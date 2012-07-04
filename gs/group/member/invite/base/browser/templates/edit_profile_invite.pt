@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_layout/page">
+  metal:use-macro="context/@@groupserver_site_home_layout/page">
   <head>
     <title metal:fill-slot="title">
       <span tal:replace="string:${view/label}: ${view/groupInfo/get_name}: ${view/siteInfo/get_name}">
@@ -18,7 +18,11 @@
         tal:attributes="action request/URL" id="edit-profile">
         <h1 tal:content="view/label">Edit Profile</h1>
         <p>
-          To invite a new member to the group, <strong>enter</strong>
+          To invite a new member to 
+          <a href="#"
+             tal:attributes="href view/groupInfo/relativeURL"
+             tal:content="view/groupInfo/name">this group</a>,
+          <strong>enter</strong>
           his or her details below and click the 
           <samp class="button"
             tal:define="action python:[a for a in view.actions][0].label"
@@ -32,6 +36,31 @@
             <span class="required"><label style="display:inline;margin:0px;">like
               this</label></span>.
         </p>
+        <div id="gs-group-member-invite-base-edit-profile">
+          <div id="standardProfileFields">
+            <h2>Profile Information</h2>
+            <p>
+              To start, enter the profile information for the new member.
+            </p>
+            <tal:block define="widgets view/requiredProfileWidgets">
+              <tal:block
+                  replace="structure provider:groupserver.FormWidgets"/>
+            </tal:block>          
+          </div><!--standardProfileFields-->
+          <div id="advancedProfileFields" class="disclosureWidget">
+            <p>
+              <a href="javascript:showHideDisclosure('advancedProfileFields')"
+                 class="disclosureButton" >You may optionally enter other 
+                 parts of the new member's profile</a>
+            </p>
+            <div class="disclosureShowHide" style="display: none;">
+              <tal:block define="widgets view/optionalProfileWidgets">
+                <tal:block
+                    replace="structure provider:groupserver.FormWidgets"/>
+              </tal:block>
+            </div><!--disclosureShowHide-->
+          </div><!--advancedProfileFields-->
+        </div><!--gs-group-member-invite-base-edit-profile-->
         <div id="invitationRelatedFields">
           <h2>Invitation</h2>
           <p>
@@ -52,45 +81,33 @@
             <strong class="email">Preview</strong> the invitation&#8230;
           </p>
         </div><!--invitationFields-->
-        <div id="delivery">
-          <h2>Message Delivery</h2>
-          <p>
-            The new member does not have to recieve email messages
-            from 
-            <span class="group" 
-              tal:content="python:view.groupInfo.name">this group</span>
-            right away: you can set the delivery settings to a daily
-            digest of topics or Web-only.
-          </p>
-          <tal:block define="widgets python:[view.adminWidgets[4]]">
-            <tal:block
-              replace="structure provider:groupserver.FormWidgets"/>
-          </tal:block>
-        </div>
         <div class="noFloat">&#160;</div>
-        <div id="standardProfileFields">
-          <h2>Standard Profile Information</h2>
-          <p>The following fields are the standard profile fields on
-            <span class="site" 
-              tal:content="python:view.siteInfo.name">this site</span>.
-            You must fill out all required fields; you may ignore 
-            the other fields.</p>
-          <tal:block define="widgets view/requiredProfileWidgets">
-            <tal:block
-              replace="structure provider:groupserver.FormWidgets"/>
-          </tal:block>          
-        </div><!--standardProfileFields-->
-        <div id="advancedProfileFields" class="disclosureWidget">
-          <p>
-            <a class="disclosureButton" href="javascript:showHideDisclosure('advancedProfileFields')">You may optionally enter other parts of the new member's profile</a>
+
+        <div id="gs-group-messages-invite-delivery"
+             class="disclosureWidget">
+          <p class="label">
+            <a href="#" 
+               class="disclosureButton" >Message Delivery</a>
           </p>
-          <div class="disclosureShowHide" style="display: none;">
-            
-          <tal:block define="widgets view/optionalProfileWidgets">
-            <tal:block
-              replace="structure provider:groupserver.FormWidgets"/>
-          </tal:block>
-        </div><!--advancedProfileFields-->
+          <div id="gs-group-messages-invite-delivery-settings"
+               class="disclosureShowHide" style="display: none;">
+            <p>
+              Normally the new member will recieve an email every time
+              someone posts to
+              <span class="group"
+                    tal:content="python:view.groupInfo.name">this group</span>.
+              However, you can set the message delivery to either
+              <samp class="option">Daily digest of topics</samp>
+              or 
+              <samp class="option">Web only</samp>
+              if you think that the new member wants less email.
+            </p>
+            <tal:block define="widgets python:[view.adminWidgets[4]]">
+              <tal:block
+                  replace="structure provider:groupserver.FormWidgets"/>
+            </tal:block>
+          </div><!--gs-group-messages-invite-delivery-settings-->
+        </div><!--gs-group-messages-invite-delivery-->
         <div class="buttons" tal:condition="view/availableActions">
           <tal:block repeat="action view/actions">
             <div class="formelementbutton">
