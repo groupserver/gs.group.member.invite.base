@@ -1,6 +1,6 @@
 # coding=utf-8
-from five.formlib.formbase import PageForm
 from zope.component import createObject
+from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.CustomUserFolder.userinfo import userInfo_to_anchor
@@ -8,44 +8,30 @@ from Products.GSProfile.edit_profile import multi_check_box_widget
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from gs.content.form.radio import radio_widget
 from gs.profile.email.base.emailuser import EmailUser
+from gs.group.base.form import GroupForm
 from interfaces import IGSInviteSiteMembers
 from notifymessages import default_message, default_subject
 from inviter import Inviter
 from audit import Auditor, INVITE_NEW_USER, INVITE_OLD_USER
 
-class GSInviteSiteMembersForm(PageForm):
+class GSInviteSiteMembersForm(GroupForm):
     label = u'Invite Site Members'
     pageTemplateFileName = 'browser/templates/invitesitemembers.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
     def __init__(self, context, request):
-        PageForm.__init__(self, context, request)
-        self.siteInfo = createObject('groupserver.SiteInfo', context)
-        self.__formFields = self.__adminInfo = self.__groupInfo = None
+        GroupForm.__init__(self, context, request)
 
-    @property
-    def groupInfo(self):
-        if self.__groupInfo == None:
-            self.__groupInfo = \
-                createObject('groupserver.GroupInfo', self.context)
-        return self.__groupInfo
-
-    @property
+    @Lazy
     def form_fields(self):
-        if self.__formFields == None:
-            self.__formFields = form.Fields(IGSInviteSiteMembers,
-                render_context=False)
-            self.__formFields['site_members'].custom_widget = \
-                multi_check_box_widget
-            self.__formFields['delivery'].custom_widget = radio_widget
-        return self.__formFields
+        retval = form.Fields(IGSInviteSiteMembers, render_context=False)
+        retval['site_members'].custom_widget = multi_check_box_widget
+        retval['delivery'].custom_widget = radio_widget
+        return retval
         
     @property
     def adminInfo(self):
-        if self.__adminInfo == None:
-            self.__adminInfo = createObject('groupserver.LoggedInUser', 
-                self.context)
-        return self.__adminInfo
+        return self.loggedInUser
 
     @property
     def defaultFromEmail(self):
@@ -107,4 +93,3 @@ class GSInviteSiteMembersForm(PageForm):
             userInfo.user.set_enableDigestByKey(self.groupInfo.id)
         elif delivery == 'web':
             userInfo.user.set_disableDeliveryByKey(self.groupInfo.id)
-
