@@ -1,4 +1,4 @@
-<html metal:use-macro="context/@@groupserver_layout/page">
+<html metal:use-macro="context/@@groupserver_site_home_layout/page">
   <head>
     <title metal:fill-slot="title">
       <span tal:replace="string:${view/label}: ${view/groupInfo/name}: ${view/siteInfo/name}">
@@ -16,8 +16,9 @@
         <h1 tal:content="view/label">Invite Site Members</h1>
         <p>
           To invite existing site members to join
-          <span class="group" 
-            tal:content="view/groupInfo/name">this group</span>,
+          <a class="group" href="#"
+             tal:attributes="href view/groupInfo/relativeURL"
+             tal:content="view/groupInfo/name">this group</a>,
           select them from the list of site members below and click the
           <samp class="button" 
             tal:define="action python:[a for a in view.actions][0].label"
