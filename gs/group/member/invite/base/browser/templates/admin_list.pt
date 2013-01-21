@@ -1,10 +1,10 @@
-<li id="invite-links"><strong>Invite members</strong> to join 
-  <span class="group" tal:content="view/groupInfo/name">this group</span>.
-  <ol id="sitemembers">
-    <li><a href="admin_join.html"><strong>Enter</strong> the details
-        of a new member,</a></li>
-    <li><a href="admin_invite_site_members.html"><strong>Select</strong>
-        existing site members,</a> or</li>
-  </ol>
-</li><!--invite-links-->
-
+<tal:block>
+  <li id="gs-group-member-invite-base-admin-single">
+    <a tal:attributes="href string:${view/groupInfo/relative_url}/admin_join.html"
+       href="admin_join.html"><strong>Invite</strong> someone new to 
+       join</a></li>
+  <li id="gs-group-member-invite-base-admin-site">  
+    <a tal:attributes="href string:${view/groupInfo/relative_url}/admin_invite_site_members.html" 
+       href="admin_invite_site_members.html"><strong>Invite</strong>
+       existing site members to join</a></li>
+</tal:block>
