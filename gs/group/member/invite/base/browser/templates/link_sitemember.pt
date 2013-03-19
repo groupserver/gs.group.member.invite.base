@@ -1,0 +1,4 @@
+<li id="gs-group-member-invite-base-admin-sitemember">
+  <a tal:attributes="href string:${view/groupInfo/relative_url}/admin_invite_site_members.html" 
+     href="admin_invite_site_members.html"><strong>Invite</strong>
+existing site members to join</a></li>

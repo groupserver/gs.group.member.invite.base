@@ -70,13 +70,21 @@
 
   <!--The Admin List -->
   <browser:viewlet
-    name="gs-group-member-invite-home-admin"
+    name="gs-group-member-invite-home-admin-single"
     manager="gs.group.member.info.interfaces.IGroupMemberAdminLinks"
     template="browser/templates/admin_list.pt"
     class="gs.group.member.viewlet.GroupAdminViewlet"
     permission="zope2.ManageUsers"
     weight="10"
     title="Invite Members" />
+  <browser:viewlet
+    name="gs-group-member-invite-home-admin-sitemember"
+    manager="gs.group.member.info.interfaces.IGroupMemberAdminLinks"
+    template="browser/templates/link_sitemember.pt"
+    class=".link.LinkSiteMember"
+    permission="zope2.ManageUsers"
+    weight="11"
+    title="Invite Site Members" />
 
   <!-- The Help -->
   <browser:viewlet name="gs-group-member-invite-new-member"
