@@ -1,5 +1,4 @@
 # coding=utf-8
-'''The form that allows an admin to invite a new person to join a group.'''
 from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
@@ -9,11 +8,12 @@ from Products.CustomUserFolder.userinfo import userInfo_to_anchor
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope,\
     abscompath
 from Products.GSGroup.groupInfo import groupInfo_to_anchor
-from Products.GSProfile.edit_profile import select_widget, wym_editor_widget
-from Products.GSProfile.utils import create_user_from_email, \
-    enforce_schema
-from gs.group.member.base.utils import user_member_of_group
-from gs.group.base.form import GroupForm
+#from Products.GSProfile.edit_profile import wym_editor_widget
+from Products.GSProfile.utils import create_user_from_email
+from gs.content.form import select_widget
+from gs.content.form.utils import enforce_schema
+from gs.group.member.base import user_member_of_group
+from gs.group.base import GroupForm
 from gs.profile.email.base.emailaddress import NewEmailAddress, \
     EmailAddressExists
 from gs.profile.email.base.emailuser import EmailUser
@@ -34,7 +34,7 @@ class InviteEditProfileForm(GroupForm):
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
     def __init__(self, group, request):
-        GroupForm.__init__(self, group, request)
+        super(InviteEditProfileForm, self).__init__(group, request)
         self.inviteFields = InviteFields(group)
 
     @Lazy
@@ -42,7 +42,7 @@ class InviteEditProfileForm(GroupForm):
         retval = form.Fields(self.inviteFields.adminInterface,
                     render_context=False)
         retval['tz'].custom_widget = select_widget
-        retval['biography'].custom_widget = wym_editor_widget
+        #retval['biography'].custom_widget = wym_editor_widget
         retval['delivery'].custom_widget = radio_widget
         return retval
 
