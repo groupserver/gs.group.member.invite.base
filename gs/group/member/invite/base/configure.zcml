@@ -5,26 +5,26 @@
   i18n_domain="groupserver">
 
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_join.html"
     class=".invite.InviteEditProfileForm"
     permission="zope2.ManageUsers"/>
   <!--The message-->
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="invitationmessage.html"
     class=".notifymessages.InvitationMessage"
     template="browser/templates/new-invitationmessage.pt"
     permission="zope2.View"/>
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="invitationmessage.txt"
     class=".notifymessages.InvitationMessageText"
     template="browser/templates/new-invitationmessage-txt.pt"
     permission="zope2.View"/>
   
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="resend_invitation.html"
     class=".reinvite.ResendInvitationForm"
     permission="zope2.ManageUsers"/>
@@ -36,20 +36,20 @@
       component=".sitemembernongroupmember.SiteMembersNonGroupMembers"
       name="groupserver.InviteMembersNonGroupMembers" />
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_invite_site_members.html"
     class=".invitesitemembers.GSInviteSiteMembersForm"
     permission="zope2.ManageUsers"/>
 
   <!--Notifications -->
   <browser:page
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_invitation_message_preview.html"
     class=".invitationmessage.InvitationMessage"
     permission="zope2.ManageUsers"/>
 
   <browser:page
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_invite.html"
     class=".admininvite.AdminInviteView"
     template="browser/templates/invite.html"
