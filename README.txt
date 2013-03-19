@@ -1,92 +1,104 @@
-.. sectnum::
+===============================
+``gs.group.member.invite.base``
+===============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Send an invitation to join a group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-============
+:Author: `Michael JasonSmith`_
+:Contact: Michael JasonSmith <mpj17@onlinegroups.net>
+:Date: 2013-03-19
+:Organization: `GroupServer.org`_
+:Copyright: This document is licensed under a
+  `Creative Commons Attribution-Share Alike 3.0 New Zealand License`_
+  by `OnlineGroups.Net`_.
+
 Introduction
 ============
 
-The ``gs.group.member.invite.base`` module is concerned with the *issuing*
-of invitations to join an online group. Invitations take the form of
-an email message with a link. The invitation is responded to using one
-of the two pages in the ``gs.profile.invite`` module.
+This product is concerned with the *issuing* of invitations to join an
+online group. Invitations take the form of an email message with a
+link. The invitation is responded to using one of the two pages in the
+``gs.profile.invite`` module [#profile]_.
 
 Why Invitations?
-================
+----------------
 
-Why does GroupServer insist in sending invitations rather than allowing
-an administrator to *just add* members? Good question.
-
-For new members the invitation does two things in addition to joining
-a person to a group. First, it **verifies** that the email address
+For new members the invitation does two things in addition to joining a
+person to a group. First, it **verifies** that the email address
 works. GroupServer will only be send messages to verified
-addresses. Second, the Respond page allows the member to set a password,
-so he or she is able to log in.
+addresses. Second, the Respond page allows the member to set a password, so
+he or she is able to log in.
 
 Even for people that already have profiles, the invitations also allow
-*informed consent*. This is not just a good idea, in many countries it
-is the law.
+*informed consent*. This is not just a good idea, in many countries it is
+the law.
 
 Pages
 =====
 
-There are three pages used for issuing invitations:
+There are two pages provided by this product for issuing invitations:
 
-* `Invite Site Member`_
-* `Invite New Member`_ and
-* `Send Invitations in Bulk`_
+* `Invite Site Member`_, and 
+* `Invite New Member`_ 
 
-All the pages for issuing an invitation are located in the group, and
-are attached to the group maker-interface.
+Sending invitations in bulk is handled by ``gs.group.member.invite.csv``
+[#csv]_.
 
 Invite Site Member
 ------------------
 
-The page for inviting a site member to join a group is the simplest. It
-uses a vocabulary to list all the site members who are not members of
-the group. The administrator selects the site members to be invited,
-and issues an invitation to them.
+The page for inviting a site member to join a group,
+``admin_invite_site_members.html``, is the simplest. It uses the
+``groupserver.InviteMembersNonGroupMembers`` vocabulary to list all the
+site members who are not members of the group. The administrator selects
+the site members to be invited, and a notification_ is sent to each.
 
 Invite New Member
 -----------------
 
-The most commonly used invitation page is used to invite a single person
-to join a group. This page allows the administrator to do the following.
+The most commonly used invitation page is used to invite a single person to
+join a group: ``admin_join.html``. This page allows the administrator to do
+the following.
 
 #. Create a complete profile for the new member, including an email
    address.
 
-#. Customises the message that is sent in the invitation.
+#. Customises the notification_ that is sent in the invitation.
 
 If the email address matches a person who already has a profile, then
 the person is just sent an invitation; the profile is left as it was.
 
-Send Invitations in Bulk
-------------------------
+Notification
+============
 
-Send Invitations in Bulk is complex enough to make my back teeth ache. It
-reads a CSV, parsing it using `the standard Python ``csv.DictReader``
-class <http://docs.python.org/library/csv.html#csv.DictReader>`_. Each
-row is assumed to be a new member, with the different profile fields
-in each column. There must be an email-address column, and each person
-must have an email address. This address is used to check if the person
-already has a profile.
+The notification is split into plain text (``invitationmessage.txt``) and
+HTML (``invitationmessage.html``) components. It is complicated by the
+administrator being able to write a short message using the `invite new
+member`_ page.
 
-* If the person already has a profile *and* is a member of the group,
-  then the member is skipped.
-  
-* If the person already has a profile but is **not** a member of the
-  group then the person is issued with an invitation.
+The class ``gs.group.member.invite.base.notify.InvitationNotifier``
+constructs the email, and uses the ``gs.profile.notify`` [#notify]_ product
+to send the message.
 
-* If the person has no profile, then one is created, the fields are set,
-  and the person is issued with an invitation.
+Resources
+=========
 
-Having churned through all the rows, the page then collates the results
-into four groups:
+- Code repository: https://source.iopen.net/groupserver/gs.group.member.invite
+- Questions and comments to http://groupserver.org/groups/development
+- Report bugs at https://redmine.iopen.net/projects/groupserver
 
-#. People who were skipped,
-#. People who had existing profiles and were invited,
-#. People who had a profile created and were invited,
-#. Rows that had errors.
+.. _GroupServer: http://groupserver.org/
+.. _GroupServer.org: http://groupserver.org/
+.. _OnlineGroups.Net: https://onlinegroups.net
+.. _Michael JasonSmith: http://groupserver.org/p/mpj17
+.. _Creative Commons Attribution-Share Alike 3.0 New Zealand License:
+   http://creativecommons.org/licenses/by-sa/3.0/nz/
 
-Sending invitations in bulk is nasty because of all the edge cases,
-and all the parsing, and all the collation.
+.. [#profile] See
+              <https://source.iopen.net/groupserver/gs.profile.invite>
 
+.. [#csv] See
+          <https://source.iopen.net/groupserver/gs.group.member.invite.csv>
+
+.. [#notify] See           <https://source.iopen.net/groupserver/gs.profile.notify>
