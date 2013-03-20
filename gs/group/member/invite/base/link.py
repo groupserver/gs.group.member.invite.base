@@ -25,5 +25,4 @@ class LinkSiteMember(GroupAdminViewlet):
         isAdmin = super(LinkSiteMember, self).show
         peopleToInvite = len(self.siteMembers) > len(self.groupMembers)
         retval = isAdmin and peopleToInvite
-        print 'Show: {0}'.format(retval)
         return retval
