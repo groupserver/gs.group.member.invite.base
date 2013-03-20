@@ -72,7 +72,7 @@
   <browser:viewlet
     name="gs-group-member-invite-home-admin-single"
     manager="gs.group.member.info.interfaces.IGroupMemberAdminLinks"
-    template="browser/templates/admin_list.pt"
+    template="browser/templates/link_single.pt"
     class="gs.group.member.viewlet.GroupAdminViewlet"
     permission="zope2.ManageUsers"
     weight="10"
