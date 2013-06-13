@@ -5,10 +5,16 @@
   i18n_domain="groupserver">
 
   <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_join.html"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     class=".invite.InviteEditProfileForm"
     permission="zope2.ManageUsers"/>
+
+  <browser:resource
+      name="gs-profile-invite-base-new-20130613.js"
+      file="browser/javascript/edit_profile_invite.js"
+      permission="zope2.Public" />
+
   <!--The message-->
   <browser:page 
     for="gs.group.base.interfaces.IGSGroupMarker"
