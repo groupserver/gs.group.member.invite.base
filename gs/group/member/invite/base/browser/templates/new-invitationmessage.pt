@@ -12,10 +12,11 @@
   </head>
   <body style="font:13px Trebuchet,'Trebuchet MS',arial,helvetica,clean,sans-serif;line-height:1.385;color:black;background:white;">
   <tal:block condition="fakeHeader">
-    <p style="text-align:right;">Message Preview 
-      <a style="padding:0 1.385em;" href="javascript:self.close()" 
-        id="close">Close</a>
-    </p>  
+    <div class="alert alert-info">
+      <button type="button" class="close" href="javascript:self.close()" 
+              id="close" style="float:right;font-weight:bold;margin:0;">&times;</button>
+      <h4>Message Preview</h4> 
+    </div>
     <pre style="background:#cccccc;padding:1.385em;"><strong>From: </strong><code tal:content="fromAddr">user@domain</code><br/>
 <strong>To: </strong> <span tal:content="toAddr">user@domain</span><br/>
 <strong>Subject: </strong> <span tal:content="subject">The Subject</span><br/></pre>
