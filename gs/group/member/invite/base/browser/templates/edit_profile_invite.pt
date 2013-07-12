@@ -1,13 +1,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_layout/page">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="context/@@groupserver_layout/page">
   <head>
     <title metal:fill-slot="title">
       <span tal:replace="string:${view/label}: ${view/groupInfo/get_name}: ${view/siteInfo/get_name}">
         Edit Profile
       </span>
     </title>
+    <tal:block metal:fill-slot="metadata">
+      <link rel="up" href="#" 
+            tal:attributes="href view/groupInfo/relativeURL;
+                            title view/groupInfo/name"/>
+    </tal:block>
   </head>
   <body>
     <tal:block content="structure provider:groupserver.FormStatusMessage"
