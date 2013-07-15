@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
@@ -123,14 +123,14 @@ class InviteEditProfileForm(GroupForm):
             auditor, inviter = self.get_auditor_inviter(userInfo)
             if user_member_of_group(user, self.groupInfo):
                 auditor.info(INVITE_EXISTING_MEMBER, addr)
-                self.status = u'''<li>The person with the email address %s
-&#8213; %s &#8213; is already a member of %s.</li>''' % (e, u, g)
-                self.status = u'%s<li>No changes to the profile of '\
-                  '%s have been made.</li>' % (self.status, u)
+                m = u'<li>The person with the email address {0} &#8213; {1} '\
+                    u'&#8213; is already a member of {2}.</li>\n'\
+                    u'<li>No changes to the profile of {1} have been made.</li>'
+                self.status = m.format(e, u, g)
             else:
-                self.status = u'<li>Inviting the existing person with '\
-                  u'the email address %s &#8213; %s &#8213; to join '\
-                  u'%s.</li>' % (e, u, g)
+                m = u'<li>Inviting the existing person with the email address '\
+                    u'{0} &#8213; {1} &#8213; to join {2}.</li>'
+                self.status = m.format(e, u, g)
                 inviteId = inviter.create_invitation(data, False)
                 auditor.info(INVITE_OLD_USER, addr)
                 inviter.send_notification(data['subject'],
@@ -148,10 +148,11 @@ class InviteEditProfileForm(GroupForm):
                 inviteId, data['fromAddr'], addr)  # Note the to-addr
             self.set_delivery(userInfo, data['delivery'])
             u = userInfo_to_anchor(userInfo)
-            self.status = u'''<li>A profile for %s has been created, and
-given the email address %s.</li>\n''' % (u, e)
-            self.status = u'%s<li>%s has been sent an invitation to '\
-              u'join %s.</li>\n' % (self.status, u, g)
+            m = u'<li>A profile for {0} has been created, and given the '\
+                u'email address {1}.</li>\n'\
+                u'<li>{0} has been sent an invitation to join {2}.</li>'
+            self.status = m.format(u, e, g)
+        self.status = '<ul>\n{0}\n</ul>'.format(self.status)
         assert user, 'User not created or found'
         assert self.status
         return userInfo
