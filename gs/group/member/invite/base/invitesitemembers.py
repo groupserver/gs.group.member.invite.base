@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
@@ -62,7 +62,7 @@ class GSInviteSiteMembersForm(GroupForm):
                         self.adminInfo, userInfo)
             auditor.info(INVITE_OLD_USER)
             inviter.send_notification(data['subject'], data['message'],
-                inviteId, data['fromAddr'])
+                                        inviteId, data['fromAddr'])
 
             s = '{0}\n<li><a href="{1}">{2}</a></li>\n'
             self.status = s.format(self.status, userInfo.url, userInfo.name)
