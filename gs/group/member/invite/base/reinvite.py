@@ -27,7 +27,7 @@ class ResendInvitationForm(GroupForm):
 
     @Lazy
     def label(self):
-        retval = u'Resend Invitation to {0}'.format(self.userInfo.name)
+        retval = u'Resend the invitation to {0}'.format(self.userInfo.name)
         return retval
 
     @Lazy
@@ -95,13 +95,13 @@ invitation.'''
         retval = msg.format(u, e, g)
         return retval
 
-    def resent(u, e, g):
+    def resent(self, u, e, g):
         msg = u'<ul><li>Resent an invitation to {0} (with the email '\
               u'address {1}) to join {2}.</li></ul>'
         retval = msg.format(u, e, g)
         return retval
 
-    def issues(u, e, g):
+    def issues(self, u, e, g):
         msg = u'<ul><li>Cannot <strong>resend</strong> an invitation to {0}, '\
               u'because he or she is yet been invited to join {1}.</li>'\
               u'<li>No changes have been made.</li>'
