@@ -3,34 +3,25 @@ from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.CustomUserFolder.interfaces import IGSUserInfo
 from Products.CustomUserFolder.userinfo import userInfo_to_anchor
-from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope,\
-    abscompath
 from Products.GSGroup.groupInfo import groupInfo_to_anchor
 #from Products.GSProfile.edit_profile import wym_editor_widget
-from Products.GSProfile.utils import create_user_from_email
 from gs.content.form import select_widget
-from gs.content.form.utils import enforce_schema
-from gs.group.member.base import user_member_of_group
 from gs.group.base import GroupForm
-from gs.profile.email.base.emailaddress import NewEmailAddress, \
-    EmailAddressExists
 from gs.profile.email.base.emailuser import EmailUser
 from gs.content.form.radio import radio_widget
-from utils import set_digest
 from invitefields import InviteFields
-from inviter import Inviter
 from notifymessages import default_message, default_subject
-from audit import Auditor, INVITE_NEW_USER, INVITE_OLD_USER,\
-    INVITE_EXISTING_MEMBER
-import gs.group.member.invite.base  # For the abscompath call below
+from audit import INVITE_NEW_USER, INVITE_OLD_USER, INVITE_EXISTING_MEMBER
+from processor import InviteProcessor
 
 
 class InviteEditProfileForm(GroupForm):
     label = u'Invite a New Group Member'
-    pageTemplateFileName = abscompath(gs.group.member.invite.base,
-                                    'browser/templates/edit_profile_invite.pt')
+    # Why is abscompath needed?
+    #pageTemplateFileName = abscompath(gs.group.member.invite.base,
+    #                                'browser/templates/edit_profile_invite.pt')
+    pageTemplateFileName = 'browser/templates/edit_profile_invite.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
     def __init__(self, group, request):
@@ -40,7 +31,7 @@ class InviteEditProfileForm(GroupForm):
     @Lazy
     def form_fields(self):
         retval = form.Fields(self.inviteFields.adminInterface,
-                    render_context=False)
+                             render_context=False)
         retval['tz'].custom_widget = select_widget
         #retval['biography'].custom_widget = wym_editor_widget
         retval['delivery'].custom_widget = radio_widget
@@ -68,7 +59,46 @@ class InviteEditProfileForm(GroupForm):
 
     @form.action(label=u'Invite', failure='handle_invite_action_failure')
     def handle_invite(self, action, data):
-        self.actual_handle_add(action, data)
+        inviteProcessor = InviteProcessor(self.context, self.request,
+                                          self.siteInfo, self.groupInfo,
+                                          self.loggedInUser, self.form_fields,
+                                          self.inviteFields)
+        result, userInfo = inviteProcessor.process(data)
+
+        # Prep data for display
+        addrName, addr = parseaddr(data['toAddr'].strip())
+        e = u'<code class="email">%s</code>' % addr
+        g = groupInfo_to_anchor(self.groupInfo)
+        u = userInfo_to_anchor(userInfo)
+
+        if result == INVITE_NEW_USER:
+            m = u'<li>A profile for {0} has been created, and given the '\
+                u'email address {1}.</li>\n'\
+                u'<li>{0} has been sent an invitation to join {2}.</li>'
+            self.status = m.format(u, e, g)
+
+        elif result == INVITE_OLD_USER:
+            m = u'<li>Inviting the existing person with the email address '\
+                u'{0} &#8213; {1} &#8213; to join {2}.</li>'
+            self.status = m.format(e, u, g)
+
+        elif result == INVITE_EXISTING_MEMBER:
+            m = u'<li>The person with the email address {0} &#8213; {1} '\
+                u'&#8213; is already a member of {2}.</li>\n'\
+                u'<li>No changes to the profile of {1} have been made.</li>'
+            self.status = m.format(e, u, g)
+
+        else:
+            # What happened?
+            m = u'<li>An unknown event occurred while attempting to invite '\
+                u'the person with the email address {0} &#8213; {1} '\
+                u'&#8213; is already a member of {2}.</li>\n'\
+                u'<li>No changes to the profile of {1} have been made.</li>'
+            self.status = m.format(e, u, g)
+
+        self.status = '<ul>\n{0}\n</ul>'.format(self.status)
+        assert userInfo, 'User not created or found'
+        assert self.status
 
     def handle_invite_action_failure(self, action, data, errors):
         if len(errors) == 1:
@@ -100,86 +130,3 @@ class InviteEditProfileForm(GroupForm):
         widgets = self.inviteFields.get_profile_widgets(self.widgets)
         widgets = [widget for widget in widgets if not(widget.required)]
         return widgets
-
-    def actual_handle_add(self, action, data):
-        userInfo = None
-
-        acl_users = self.context.acl_users
-        toAddr = data['toAddr'].strip()
-        addrName, addr = parseaddr(toAddr)
-
-        emailChecker = NewEmailAddress(title=u'Email')
-        emailChecker.context = self.context
-        e = u'<code class="email">%s</code>' % addr
-        g = groupInfo_to_anchor(self.groupInfo)
-
-        try:
-            emailChecker.validate(toAddr)  # Can handle a full address
-        except EmailAddressExists:
-            user = acl_users.get_userByEmail(addr)  # Cannot
-            assert user, 'User for address <%s> not found' % addr
-            userInfo = IGSUserInfo(user)
-            u = userInfo_to_anchor(userInfo)
-            auditor, inviter = self.get_auditor_inviter(userInfo)
-            if user_member_of_group(user, self.groupInfo):
-                auditor.info(INVITE_EXISTING_MEMBER, addr)
-                m = u'<li>The person with the email address {0} &#8213; {1} '\
-                    u'&#8213; is already a member of {2}.</li>\n'\
-                    u'<li>No changes to the profile of {1} have been made.</li>'
-                self.status = m.format(e, u, g)
-            else:
-                m = u'<li>Inviting the existing person with the email address '\
-                    u'{0} &#8213; {1} &#8213; to join {2}.</li>'
-                self.status = m.format(e, u, g)
-                inviteId = inviter.create_invitation(data, False)
-                auditor.info(INVITE_OLD_USER, addr)
-                inviter.send_notification(data['subject'],
-                    data['message'], inviteId, data['fromAddr'])  # No to-addr
-                self.set_delivery(userInfo, data['delivery'])
-        else:
-            # Email address does not exist, but it is a legitimate address
-            user = create_user_from_email(self.context, toAddr)
-            userInfo = IGSUserInfo(user)
-            self.add_profile_attributes(userInfo, data)
-            auditor, inviter = self.get_auditor_inviter(userInfo)
-            inviteId = inviter.create_invitation(data, True)
-            auditor.info(INVITE_NEW_USER, addr)
-            inviter.send_notification(data['subject'], data['message'],
-                inviteId, data['fromAddr'], addr)  # Note the to-addr
-            self.set_delivery(userInfo, data['delivery'])
-            u = userInfo_to_anchor(userInfo)
-            m = u'<li>A profile for {0} has been created, and given the '\
-                u'email address {1}.</li>\n'\
-                u'<li>{0} has been sent an invitation to join {2}.</li>'
-            self.status = m.format(u, e, g)
-        self.status = '<ul>\n{0}\n</ul>'.format(self.status)
-        assert user, 'User not created or found'
-        assert self.status
-        return userInfo
-
-    def add_profile_attributes(self, userInfo, data):
-        enforce_schema(userInfo.user, self.inviteFields.profileInterface)
-        fields = self.form_fields.select(*self.inviteFields.profileFieldIds)
-        for field in fields:
-            field.interface = self.inviteFields.profileInterface
-
-        form.applyChanges(userInfo.user, fields, data)
-        set_digest(userInfo, self.groupInfo, data)
-
-    def get_auditor_inviter(self, userInfo):
-        ctx = get_the_actual_instance_from_zope(self.context)
-        inviter = Inviter(ctx, self.request, userInfo,
-                            self.adminInfo, self.siteInfo,
-                            self.groupInfo)
-        auditor = Auditor(self.siteInfo, self.groupInfo,
-                    self.adminInfo, userInfo)
-        return (auditor, inviter)
-
-    def set_delivery(self, userInfo, delivery):
-        if delivery == 'email':
-            # --=mpj17=-- The default is one email per post
-            pass
-        elif delivery == 'digest':
-            userInfo.user.set_enableDigestByKey(self.groupInfo.id)
-        elif delivery == 'web':
-            userInfo.user.set_disableDeliveryByKey(self.groupInfo.id)
