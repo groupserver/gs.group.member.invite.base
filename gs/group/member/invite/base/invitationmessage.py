@@ -3,7 +3,7 @@ try:
     from five.formlib.formbase import PageForm
 except ImportError:
     from Products.Five.formlib.formbase import PageForm
-    
+
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
@@ -15,7 +15,7 @@ class InvitationMessage(PageForm):
     pageTemplateFileName = 'browser/templates/invitationmessage.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
     form_fields = form.Fields(IGSInvitationMessage, render_context=False)
-    
+
     def __init__(self, context, request):
         PageForm.__init__(self, context, request)
 
@@ -23,11 +23,11 @@ class InvitationMessage(PageForm):
           createObject('groupserver.SiteInfo', context)
         self.__groupInfo = self.__formFields =  self.__config = None
         self.__adminInfo = self.__invitationQuery = None
-                
+
     @form.action(label=u'Invite', failure='handle_invite_action_failure')
     def handle_invite(self, action, data):
         raise NotImplemented
-        
+
     def handle_invite_action_failure(self, action, data, errors):
         if len(errors) == 1:
             self.status = u'<p>There is an error:</p>'
