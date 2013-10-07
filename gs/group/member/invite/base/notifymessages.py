@@ -98,7 +98,7 @@ class FormattedMessage(object):
 
     @Lazy
     def html(self):
-        p = '<p style="margin: 1.385em 0 1.385em 1.385em;">'
+        p = '<p>'
         withPara = self.originalMessage.replace(u'\n\n', u'</p>%s' % p)
         withBr = withPara.replace('u\n', u'<br/>')
         retval = '%s%s</p>' % (p, withBr)
