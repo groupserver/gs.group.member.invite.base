@@ -1,4 +1,18 @@
 # -*- coding: utf-8 -*-
+##############################################################################
+#
+# Copyright © 2013 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+from __future__ import absolute_import
 from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
@@ -10,10 +24,10 @@ from gs.content.form import select_widget
 from gs.group.base import GroupForm
 from gs.profile.email.base.emailuser import EmailUser
 from gs.content.form.radio import radio_widget
-from invitefields import InviteFields
-from notifymessages import default_message, default_subject
-from audit import INVITE_NEW_USER, INVITE_OLD_USER, INVITE_EXISTING_MEMBER
-from processor import InviteProcessor
+from .invitefields import InviteFields
+from .notifymessages import default_message, default_subject
+from .audit import INVITE_NEW_USER, INVITE_OLD_USER, INVITE_EXISTING_MEMBER
+from .processor import InviteProcessor
 
 
 class InviteEditProfileForm(GroupForm):
