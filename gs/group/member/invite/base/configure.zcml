@@ -17,14 +17,14 @@
 
   <!--The message-->
   <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="invitationmessage.html"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     class=".notifymessages.InvitationMessage"
     template="browser/templates/new-invitationmessage.pt"
     permission="zope2.View"/>
   <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="invitationmessage.txt"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     class=".notifymessages.InvitationMessageText"
     template="browser/templates/new-invitationmessage-txt.pt"
     permission="zope2.View"/>
