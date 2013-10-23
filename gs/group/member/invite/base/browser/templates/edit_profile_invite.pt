@@ -98,7 +98,7 @@
         <p id="invite-message-preview-button">
           <!--TODO: Move the style into the main CSS as the 
               -   box-o-interest class-->
-          <button class="btn">Preview&#8230;</button>
+          <a class="btn">Preview&#8230;</a>
         </p>
       </div><!--invitationFields-->
       <div class="noFloat">&#160;</div>
