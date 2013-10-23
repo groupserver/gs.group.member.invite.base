@@ -11,7 +11,7 @@
     permission="zope2.ManageUsers"/>
 
   <browser:resource
-      name="gs-profile-invite-base-new-20130613.js"
+      name="gs-profile-invite-base-new-20131023.js"
       file="browser/javascript/edit_profile_invite.js"
       permission="zope2.Public" />
 

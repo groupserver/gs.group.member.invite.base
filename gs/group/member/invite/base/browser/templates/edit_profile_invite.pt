@@ -138,7 +138,7 @@
     </form>
     <tal:block metal:fill-slot="javascript">
       <script type="text/javascript" defer="true"
-              src="/++resource++gs-profile-invite-base-new-20130613.js"> </script>
+              src="/++resource++gs-profile-invite-base-new-20131023.js"> </script>
     </tal:block>
   </body>
 </html>
