@@ -14,7 +14,7 @@
 ##############################################################################
 from zope.component import createObject, getMultiAdapter
 from zope.cachedescriptors.property import Lazy
-from gs.profile.notify.sender import MessageSender
+from gs.profile.notify import MessageSender
 UTF8 = 'utf-8'
 
 

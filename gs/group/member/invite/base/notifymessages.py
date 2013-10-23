@@ -16,8 +16,8 @@ from textwrap import TextWrapper
 from urllib import urlencode
 from zope.cachedescriptors.property import Lazy
 from gs.content.email.base import GroupEmail
-from gs.group.base.page import GroupPage
-from gs.profile.email.base.emailuser import EmailUser
+from gs.group.base import GroupPage
+from gs.profile.email.base import EmailUser
 UTF8 = 'utf-8'
 
 
