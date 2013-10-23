@@ -13,6 +13,7 @@ function popupPreview (event) {
     messageBody = messageBody.replace(/\ /g, '%20');
     messageBody = messageBody.replace(/\n/g, '%0A');
     uri = baseUri + '?form.message=' + messageBody;
+    uri = uri + '&form.fakeHeader=1'
     fromAddr = jQuery('#form\\.fromAddr').val();
     uri = uri + '&form.fromAddr=' + fromAddr;
     toAddr = jQuery('#form\\.toAddr').val();
