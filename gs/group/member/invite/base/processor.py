@@ -1,4 +1,18 @@
 # -*- coding: utf-8 -*-
+##############################################################################
+#
+# Copyright © 2013 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+from __future__ import absolute_import
 from email.utils import parseaddr
 from zope.formlib import form
 from Products.CustomUserFolder.interfaces import IGSUserInfo
@@ -8,10 +22,10 @@ from gs.content.form.utils import enforce_schema
 from gs.profile.email.base.emailaddress import NewEmailAddress, \
     EmailAddressExists
 from gs.group.member.base import user_member_of_group
-from gs.group.member.invite.base.audit import Auditor, INVITE_NEW_USER, \
-    INVITE_OLD_USER, INVITE_EXISTING_MEMBER
-from gs.group.member.invite.base.inviter import Inviter
-from gs.group.member.invite.base.utils import set_digest
+from .audit import Auditor, INVITE_NEW_USER, INVITE_OLD_USER, \
+    INVITE_EXISTING_MEMBER
+from .inviter import Inviter
+from .utils import set_digest
 
 
 class InviteProcessor(object):
@@ -20,7 +34,7 @@ class InviteProcessor(object):
         provided by another user.
     """
 
-    def __init__(self, context, request, siteInfo, groupInfo, invitingUserInfo, 
+    def __init__(self, context, request, siteInfo, groupInfo, invitingUserInfo,
                  form_fields, inviteFields):
         """
             Input: context - Zope context object. Should be a Group context.
