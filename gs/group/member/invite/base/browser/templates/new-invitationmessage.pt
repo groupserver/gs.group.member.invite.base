@@ -7,10 +7,7 @@
       <span tal:replace="view/siteInfo/name">Site</span></title>
   </head>
   <body>
-    <div tal:condition="python:options.get('fakeHeader', True)"
-         tal:define="fromAddr python:options.get('fromAddr', None) or view.request.form.get('form.fromAddr', None) or view.get_addr(adminInfo);
-                     toAddr python:options.get('toAddr', None) or view.request.form.get('form.toAddr', None) or view.get_addr(userInfo);
-                     subject options/subject | view/request/form/form.subject | view/defaultSubject;"
+    <div tal:condition="options/fakeHeader | python:False"
          id="gs-group-member-invite-base-message-fakeheader"
          metal:fill-slot="prebody">
       <h4><a title="Close" class="btn btn-mini pull-right" 
@@ -22,11 +19,15 @@
     </div>
     <div
       metal:fill-slot="body"
-      tal:define="adminInfo options/adminInfo | view/loggedInUserInfo;
-                  userInfo options/userInfo | view/loggedInUserInfo;
-                  toName python:view.request.form.get('form.toName', None) or userInfo.name;
-                  invitationId options/invitationId | string:example;
-                  message options/message | view/request/form/form.message | view/defaultMessage">
+      tal:define="global fakeHeader options/fakeHeader | python:True;
+                  global fromAddr python:options.get('fromAddr', None) or view.request.form.get('form.fromAddr', None) or view.get_addr(adminInfo);
+                  global toAddr python:options.get('toAddr', None) or view.request.form.get('form.toAddr', None) or view.get_addr(userInfo);
+                  global subject options/subject | view/request/form/form.subject | view/defaultSubject;
+                  global adminInfo options/adminInfo | view/loggedInUserInfo;
+                  global userInfo options/userInfo | view/loggedInUserInfo;
+                  global toName python:view.request.form.get('form.toName', None) or userInfo.name;
+                  global invitationId options/invitationId | string:example;
+                  global message options/message | view/request/form/form.message | view/defaultMessage;">
       <h2>Invitation to join
       <span tal:content="view/groupInfo/name">This Group</span></h2>
       <!--  Provide personalized content in social networking updates and 
