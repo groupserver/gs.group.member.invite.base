@@ -9,7 +9,6 @@
     for="gs.group.base.interfaces.IGSGroupMarker"
     class=".invite.InviteEditProfileForm"
     permission="zope2.ManageUsers"/>
-
   <browser:resource
       name="gs-profile-invite-base-new-20131023.js"
       file="browser/javascript/edit_profile_invite.js"
@@ -30,8 +29,8 @@
     permission="zope2.View"/>
   
   <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="resend_invitation.html"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     class=".reinvite.ResendInvitationForm"
     permission="zope2.ManageUsers"/>
     
@@ -42,21 +41,20 @@
       component=".sitemembernongroupmember.SiteMembersNonGroupMembers"
       name="groupserver.InviteMembersNonGroupMembers" />
   <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_invite_site_members.html"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     class=".invitesitemembers.GSInviteSiteMembersForm"
     permission="zope2.ManageUsers"/>
 
   <!--Notifications -->
   <browser:page
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_invitation_message_preview.html"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     class=".invitationmessage.InvitationMessage"
     permission="zope2.ManageUsers"/>
-
   <browser:page
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_invite.html"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     class=".admininvite.AdminInviteView"
     template="browser/templates/invite.html"
     permission="zope2.ManageUsers"/>
@@ -65,13 +63,13 @@
     interface=".interfaces.IGSInvitationMessageContentProvider"
     type="zope.contentprovider.interfaces.ITALNamespaceData"/>
   <adapter
+    name="groupserver.InvitationMessage"
     factory=".invitationmessagecontentprovider.InvitationMessageContentProvider"
-    provides="zope.contentprovider.interfaces.IContentProvider"
-    name="groupserver.InvitationMessage"/>
+    provides="zope.contentprovider.interfaces.IContentProvider" />
     
   <utility 
-    factory=".audit.AuditEventFactory"
     name="gs.group.member.invite"
+    factory=".audit.AuditEventFactory"
     permission="zope.Public" />
 
   <!--The Admin List -->
@@ -93,7 +91,8 @@
     title="Invite Site Members" />
 
   <!-- The Help -->
-  <browser:viewlet name="gs-group-member-invite-new-member"
+  <browser:viewlet 
+    name="gs-group-member-invite-new-member"
     manager="gs.help.interfaces.IAdminHelp"
     template="browser/templates/help-new-member.pt"
     permission="zope.Public"
