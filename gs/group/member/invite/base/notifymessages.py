@@ -15,8 +15,7 @@
 from textwrap import TextWrapper
 from urllib import urlencode
 from zope.cachedescriptors.property import Lazy
-from gs.content.email.base import GroupEmail
-from gs.group.base import GroupPage
+from gs.content.email.base import GroupEmail, TextMixin
 from gs.profile.email.base import EmailUser
 UTF8 = 'utf-8'
 
@@ -28,22 +27,25 @@ def default_message(groupInfo):
 
 
 def default_subject(groupInfo):
-    return u'Invitation to join %s (Action required)' % groupInfo.name
+    r = u'Invitation to join {0} (Action required)'
+    retval = r.format(groupInfo.name)
+    return retval
 
 
 class InvitationMessageMixin(object):
     @Lazy
     def supportEmail(self):
-        sub = (u'Invitation to %s' % self.groupInfo.name).encode(UTF8)
-        msg = (u'Hi!\n\nI received an invitation to join the group '
-            u'%s\n    %s\nand...' % (self.groupInfo.name,
-                self.groupInfo.url)).encode(UTF8)
+        sub = u'Invitation to {0}'.format(self.groupInfo.name)
+        m = u'Hi!\n\nI received an invitation to join the group {0}\n    '\
+            u'{1}\nand...'
+        msg = m.format(self.groupInfo.name, self.groupInfo.url)
         data = {
-          'Subject': sub,
-          'body': msg,
+          'Subject': sub.encode(UTF8),
+          'body': msg.encode(UTF8),
         }
-        retval = 'mailto:%s?%s' % \
-            (self.siteInfo.get_support_email(), urlencode(data))
+        mailto = 'mailto:{0}?{1}'
+        retval = mailto.format(self.siteInfo.get_support_email(),
+                                urlencode(data))
         return retval
 
     def get_addr(self, userInfo):
@@ -73,14 +75,12 @@ class InvitationMessage(GroupEmail, InvitationMessageMixin):
         super(InvitationMessage, self).__init__(context, request)
 
 
-class InvitationMessageText(GroupPage, InvitationMessageMixin):
+class InvitationMessageText(InvitationMessage, TextMixin):
+
     def __init__(self, context, request):
         super(InvitationMessageText, self).__init__(context, request)
-        response = request.response
-        response.setHeader("Content-Type", 'text/plain; charset=UTF-8')
-        filename = 'invitation-to-%s.txt' % self.groupInfo.name
-        response.setHeader('Content-Disposition',
-                            'inline; filename="%s"' % filename)
+        filename = 'invitation-to-{0}.txt'.format(self.groupInfo.id)
+        self.set_header(filename)
 
     def format_message(self, m):
         retval = FormattedMessage(m).txt.rstrip()
@@ -98,10 +98,9 @@ class FormattedMessage(object):
 
     @Lazy
     def html(self):
-        p = '<p>'
-        withPara = self.originalMessage.replace(u'\n\n', u'</p>%s' % p)
+        withPara = self.originalMessage.replace(u'\n\n', u'</p><p>')
         withBr = withPara.replace('u\n', u'<br/>')
-        retval = '%s%s</p>' % (p, withBr)
+        retval = '<p>{0}</p>'.format(withBr)
         return retval
 
     @Lazy
@@ -111,5 +110,5 @@ class FormattedMessage(object):
         retval = ''
         for line in self.originalMessage.splitlines():
             p = tw.fill(line.strip())
-            retval = '%s%s\n\n' % (retval, p)
+            retval = '{0}{1}\n\n'.format(retval, p)
         return retval
