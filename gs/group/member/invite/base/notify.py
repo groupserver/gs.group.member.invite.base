@@ -60,11 +60,12 @@ class InvitationNotifier(object):
         text = self.textTemplate(adminInfo=adminInfo, userInfo=userInfo,
                                     fromAddr=fromAddr, toAddr=toAddrs[0],
                                     subject=subject, invitationId=invitationId,
-                                    message=message)
+                                    message=message, fakeHeader=False)
         html = self.htmlTemplate(adminInfo=adminInfo, userInfo=userInfo,
                                     fromAddr=fromAddr, toAddr=toAddrs[0],
                                     subject=subject, invitationId=invitationId,
                                     message=message, fakeHeader=False)
+        html = ''  # FIXME
         ms = MessageSender(self.context, userInfo)
         ms.send_message(subject, text, html, fromAddr, toAddrs)
         self.request.response.setHeader('Content-Type', self.oldContentType)
