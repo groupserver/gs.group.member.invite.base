@@ -1,10 +1,23 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+# Copyright © 2013 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
 from zope.cachedescriptors.property import Lazy
 from zope.interface import implements, providedBy
 from zope.component import createObject
 from zope.schema.vocabulary import SimpleTerm
-from zope.schema.interfaces import IVocabulary, \
-  IVocabularyTokenized, ITitledTokenizedTerm
+from zope.schema.interfaces import IVocabulary, IVocabularyTokenized, \
+    ITitledTokenizedTerm
 from zope.interface.common.mapping import IEnumerableMapping
 from gs.group.member.base import user_member_of_group
 from gs.profile.email.base.emailuser import EmailUser

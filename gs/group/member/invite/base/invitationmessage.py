@@ -1,28 +1,33 @@
-# coding=utf-8
-try:
-    from five.formlib.formbase import PageForm
-except ImportError:
-    from Products.Five.formlib.formbase import PageForm
-
-from zope.component import createObject
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+# Copyright © 2013 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+from __future__ import absolute_import
+from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.XWFCore.XWFUtils import get_support_email
-from interfaces import IGSInvitationMessage
+from gs.group.base import GroupForm
+from .interfaces import IGSInvitationMessage
 
-class InvitationMessage(PageForm):
+
+class InvitationMessage(GroupForm):
     label = u'Invitation Preview'
     pageTemplateFileName = 'browser/templates/invitationmessage.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
     form_fields = form.Fields(IGSInvitationMessage, render_context=False)
 
     def __init__(self, context, request):
-        PageForm.__init__(self, context, request)
-
-        siteInfo = self.siteInfo = \
-          createObject('groupserver.SiteInfo', context)
-        self.__groupInfo = self.__formFields =  self.__config = None
-        self.__adminInfo = self.__invitationQuery = None
+        super(InvitationMessage, self).__init__(context, request)
 
     @form.action(label=u'Invite', failure='handle_invite_action_failure')
     def handle_invite(self, action, data):
@@ -35,18 +40,10 @@ class InvitationMessage(PageForm):
             self.status = u'<p>There are errors:</p>'
 
     # Non-Standard methods below this point
-    @property
-    def groupInfo(self):
-        if self.__groupInfo == None:
-            self.__groupInfo = \
-                createObject('groupserver.GroupInfo', self.context)
-        return self.__groupInfo
-
-    @property
+    @Lazy
     def body(self):
         return self.request.form['form.body'].replace('\n', '<br/>')
 
-    @property
+    @Lazy
     def support(self):
-        return get_support_email(self.context, self.siteInfo.id)
-
+        return self.siteInfo.get_support_email()

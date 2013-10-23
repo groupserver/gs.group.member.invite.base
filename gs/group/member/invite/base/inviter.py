@@ -12,15 +12,16 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from __future__ import absolute_import
+import md5
 from operator import concat
 from time import asctime
-import md5
 from zope.cachedescriptors.property import Lazy
-from Products.XWFCore.XWFUtils import convert_int2b62
 from gs.profile.notify.interfaces import IGSNotifyUser
 from gs.profile.email.base.emailuser import EmailUser
-from queries import InvitationQuery
-from notify import InvitationNotifier
+from Products.XWFCore.XWFUtils import convert_int2b62
+from .queries import InvitationQuery
+from .notify import InvitationNotifier
 
 
 class Inviter(object):
