@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<configure xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:five="http://namespaces.zope.org/five"
-  i18n_domain="groupserver">
+<!-- Copyright © 2013 OnlineGroups.net and Contributors. -->
+<!-- All Rights Reserved. -->
 
-  <browser:page 
+<!-- This software is subject to the provisions of the Zope Public -->
+<!-- License, Version 2.1 (ZPL).  A copy of the ZPL should accompany this -->
+<!-- distribution. -->
+
+<!-- THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED -->
+<!-- WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED -->
+<!-- WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND -->
+<!-- FITNESS FOR A PARTICULAR PURPOSE. -->
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           i18n_domain="groupserver">
+
+  <include package="zope.viewlet" file="meta.zcml" />
+
+  <browser:page
     name="admin_join.html"
     for="gs.group.base.interfaces.IGSGroupMarker"
     class=".invite.InviteEditProfileForm"
@@ -15,32 +27,32 @@
       permission="zope2.Public" />
 
   <!--The message-->
-  <browser:page 
+  <browser:page
     name="invitationmessage.html"
     for="gs.group.base.interfaces.IGSGroupMarker"
     class=".notifymessages.InvitationMessage"
     template="browser/templates/new-invitationmessage.pt"
     permission="zope2.View"/>
-  <browser:page 
+  <browser:page
     name="invitationmessage.txt"
     for="gs.group.base.interfaces.IGSGroupMarker"
     class=".notifymessages.InvitationMessageText"
     template="browser/templates/new-invitationmessage-txt.pt"
     permission="zope2.View"/>
-  
-  <browser:page 
+
+  <browser:page
     name="resend_invitation.html"
     for="gs.group.base.interfaces.IGSGroupMarker"
     class=".reinvite.ResendInvitationForm"
     permission="zope2.ManageUsers"/>
-    
+
   <!-- The Invite Site Member Page -->
   <!--    The vocabulary of site members that are not group members-->
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
       component=".sitemembernongroupmember.SiteMembersNonGroupMembers"
       name="groupserver.InviteMembersNonGroupMembers" />
-  <browser:page 
+  <browser:page
     name="admin_invite_site_members.html"
     for="gs.group.base.interfaces.IGSGroupMarker"
     class=".invitesitemembers.GSInviteSiteMembersForm"
@@ -59,15 +71,15 @@
     template="browser/templates/invite.html"
     permission="zope2.ManageUsers"/>
 
-  <interface 
+  <interface
     interface=".interfaces.IGSInvitationMessageContentProvider"
     type="zope.contentprovider.interfaces.ITALNamespaceData"/>
   <adapter
     name="groupserver.InvitationMessage"
     factory=".invitationmessagecontentprovider.InvitationMessageContentProvider"
     provides="zope.contentprovider.interfaces.IContentProvider" />
-    
-  <utility 
+
+  <utility
     name="gs.group.member.invite"
     factory=".audit.AuditEventFactory"
     permission="zope.Public" />
@@ -91,7 +103,7 @@
     title="Invite Site Members" />
 
   <!-- The Help -->
-  <browser:viewlet 
+  <browser:viewlet
     name="gs-group-member-invite-new-member"
     manager="gs.help.interfaces.IAdminHelp"
     template="browser/templates/help-new-member.pt"
