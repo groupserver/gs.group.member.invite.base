@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_layout/page">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="context/@@groupserver_layout/page">
   <head>
     <title metal:fill-slot="title">
       <span tal:replace="string:Invite Members: ${view/groupInfo/name}: ${view/siteInfo/name}">
@@ -22,7 +22,7 @@
             existing site members,</a> or</li>
       </ol>
       <p>
-        You can also 
+        You can also
         <a id="reg_link"
           tal:attributes="href string:${view/groupInfo/url}/admin_remote_request_register.html"
           href="#"><strong>add a registration box</strong> to a site.</a>
@@ -30,4 +30,3 @@
     </tal:block>
   </body>
 </html>
-

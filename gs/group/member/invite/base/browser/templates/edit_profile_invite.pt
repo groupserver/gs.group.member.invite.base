@@ -9,7 +9,7 @@
       </span>
     </title>
     <tal:block metal:fill-slot="metadata">
-      <link rel="up" href="#" 
+      <link rel="up" href="#"
             tal:attributes="href view/groupInfo/relativeURL;
                             title view/groupInfo/name"/>
     </tal:block>
@@ -27,7 +27,7 @@
                 tal:content="string:${view/siteInfo/name} Homepage">Home</span></a>
       </li>
       <li>
-        <a class="group" 
+        <a class="group"
            tal:attributes="href string:${view/groupInfo/relativeURL}/">
           <strong
             tal:content="view/groupInfo/name">This group</strong></a>
@@ -39,21 +39,21 @@
           tal:attributes="action request/URL" id="gs-group-member-invite-base-new">
       <h1 tal:content="view/label">Edit Profile</h1>
       <p>
-        To invite a new member to 
+        To invite a new member to
         <a href="#"
            tal:attributes="href view/groupInfo/relativeURL"
            tal:content="view/groupInfo/name">this group</a>,
         <strong>enter</strong>
-        his or her details below and click the 
+        his or her details below and click the
         <samp class="button"
               tal:define="action python:[a for a in view.actions][0].label"
               tal:content="action">Big R</samp>
-        button.              
+        button.
         A profile will be created, and an email will be sent inviting
         the recipient to join
-        <span class="group" 
+        <span class="group"
               tal:content="python:view.groupInfo.name">this group</span>.
-        You must fill out all required fields, which are marked 
+        You must fill out all required fields, which are marked
         <span class="required"><label style="display:inline;margin:0px;">like
         this</label></span>.
       </p>
@@ -66,12 +66,12 @@
           <tal:block define="widgets view/requiredProfileWidgets">
             <tal:block
                 replace="structure provider:groupserver.FormWidgets"/>
-          </tal:block>          
+          </tal:block>
         </div><!--standardProfileFields-->
         <div id="advancedProfileFields" class="disclosureWidget">
           <p>
             <a href="javascript:showHideDisclosure('advancedProfileFields')"
-               class="disclosureButton" >You may optionally enter other 
+               class="disclosureButton" >You may optionally enter other
             parts of the new member's profile</a>
           </p>
           <div class="disclosureShowHide" style="display: none;">
@@ -86,8 +86,8 @@
         <h2>Invitation</h2>
         <p>
           An invitation is an email from you asking the recipient to
-          join 
-          <span class="group" 
+          join
+          <span class="group"
                 tal:content="python:view.groupInfo.name">this group</span>.
           You can customise the message below.
         </p>
@@ -96,7 +96,7 @@
               replace="structure provider:groupserver.FormWidgets"/>
         </tal:block>
         <p id="invite-message-preview-button">
-          <!--TODO: Move the style into the main CSS as the 
+          <!--TODO: Move the style into the main CSS as the
               -   box-o-interest class-->
           <a class="btn">Preview&#8230;</a>
         </p>
@@ -106,7 +106,7 @@
       <div id="gs-group-messages-invite-delivery"
            class="disclosureWidget">
         <p>
-          <a href="#" 
+          <a href="#"
              class="disclosureButton">Message Delivery</a>
         </p>
         <div id="gs-group-messages-invite-delivery-settings"
@@ -118,7 +118,7 @@
                   tal:content="python:view.groupInfo.name">this group</span>.
             However, you can set the message delivery to either
             <samp class="option">Daily digest of topics</samp>
-            or 
+            or
             <samp class="option">Web only</samp>
             if you think that the new member wants less email.
           </p>
@@ -142,4 +142,3 @@
     </tal:block>
   </body>
 </html>
-
