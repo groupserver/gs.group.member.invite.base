@@ -137,8 +137,15 @@
       </div><!--buttons-->
     </form>
     <tal:block metal:fill-slot="javascript">
-      <script type="text/javascript" defer="true"
-              src="/++resource++gs-profile-invite-base-new-20131023.js"> </script>
+      <script type="text/javascript"
+              src="/++resource++gs-profile-invite-base-new-20131023.js"
+              defer="true"> </script>
+      <script class="gs-content-js-wymeditor"
+              type="text/javascript"
+              data-text-element="#form\.biography"
+              data-submit="#form\.actions\.invite"
+              src="/++resource++wymeditor-1.0.0b5/gswymeditor-min.js"
+              defer="true"> </script>
     </tal:block>
   </body>
 </html>
