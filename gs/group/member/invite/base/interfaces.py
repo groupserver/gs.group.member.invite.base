@@ -12,122 +12,126 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from __future__ import unicode_literals
 from zope.schema import ASCIILine, Bool, Choice, List, Text, TextLine
 from zope.interface.interface import Interface
 from Products.GSProfile.interfaces import deliveryVocab
 
 
 class IGSInvitationMessage(Interface):
-    text = Bool(title=u'Text',
-        description=u'Display the invitation as pure text, rather than '
-            u'a HTML pre-element. Call it command  coupling if you '
-            u'want, it is how the code works.',
+    text = Bool(title='Text',
+        description='Display the invitation as pure text, rather than '
+            'a HTML pre-element. Call it command  coupling if you '
+            'want, it is how the code works.',
         required=False,
         default=False)
 
-    preview = Bool(title=u'Preview',
-          description=u'True if the message is a preview.',
+    preview = Bool(title='Preview',
+          description='True if the message is a preview.',
           required=False,
           default=False)
 
-    toAddr = ASCIILine(title=u'To',
-        description=u'The email address of the person receiving the '
-            u'invitation.',
+    toAddr = ASCIILine(title='To',
+        description='The email address of the person receiving the '
+            'invitation.',
         required=False)
 
-    fromAddr = ASCIILine(title=u'To',
-        description=u'The email address of the person sending the '
-            u'invitation.',
+    fromAddr = ASCIILine(title='To',
+        description='The email address of the person sending the '
+            'invitation.',
         required=False)
 
-    supportAddr = ASCIILine(title=u'Support',
-        description=u'The email address of the support-group.',
+    supportAddr = ASCIILine(title='Support',
+        description='The email address of the support-group.',
         required=False)
 
-    subject = TextLine(title=u'Subject',
-        description=u'The subject-line of the invitation.',
+    subject = TextLine(title='Subject',
+        description='The subject-line of the invitation.',
         required=False)
 
-    body = Text(title=u'Body',
-        description=u'The body of the invitation.',
+    body = Text(title='Body',
+        description='The body of the invitation.',
         required=True)
 
-    invitationId = ASCIILine(title=u'Invitation Identifier',
-        description=u'The identifier for the invitation to join the '
-            u'group',
+    invitationId = ASCIILine(title='Invitation Identifier',
+        description='The identifier for the invitation to join the '
+            'group',
         required=False,
-        default='example')
+        default='example'.encode('ascii'))
+
+
+pageTemplatePath = 'browser/templates/invitationmessagecontentprovider.pt'
 
 
 class IGSInvitationMessageContentProvider(IGSInvitationMessage):
-    pageTemplateFileName = ASCIILine(title=u"Page Template File Name",
-          description=u'The name of the ZPT file that is used to '
-            u'render the status message.',
+    pageTemplateFileName = ASCIILine(title='Page Template File Name',
+          description='The name of the ZPT file that is used to '
+            'render the status message.',
           required=False,
-          default="browser/templates/invitationmessagecontentprovider.pt")
+          default=pageTemplatePath.encode('ascii'))
 
-    message = Text(title=u'Invitation Message',
-        description=u'The message that appears at the top of the email '
-            u'invitation to the new group member. The message will '
-            u'appear before the link that allows the recipient to '
-            u'accept or reject the invitation.',
+    message = Text(title='Invitation Message',
+        description='The message that appears at the top of the email '
+            'invitation to the new group member. The message will '
+            'appear before the link that allows the recipient to '
+            'accept or reject the invitation.',
         required=True)
 
 
 class IGSInvitationFields(Interface):
-    message = Text(title=u'Invitation Message',
-        description=u'The message that appears at the top of the email '
-            u'invitation to the new group member. The message will '
-            u'appear before the link that allows the member to accept '
-            u'or reject the invitation.',
+    message = Text(title='Invitation Message',
+        description='The message that appears at the top of the email '
+            'invitation to the new group member. The message will '
+            'appear before the link that allows the member to accept '
+            'or reject the invitation.',
         required=True)
 
-    fromAddr = Choice(title=u'Email From',
-      description=u'The email address that you want in the "From" '
-        u'line in the invitation tat you send.',
+    fromAddr = Choice(title='Email From',
+      description='The email address that you want in the "From" '
+        'line in the invitation tat you send.',
       vocabulary='EmailAddressesForLoggedInUser',
       required=True)
 
-    delivery = Choice(title=u'Group Message Delivery Settings',
-      description=u'The message delivery settings for the new user',
+    delivery = Choice(title='Group Message Delivery Settings',
+      description='The message delivery settings for the new user',
       vocabulary=deliveryVocab,
       default='email')
 
-    subject = TextLine(title=u'Subject',
-        description=u'The subject line of the invitation message that '
-            u'will be sent to the new member',
+    subject = TextLine(title='Subject',
+        description='The subject line of the invitation message that '
+            'will be sent to the new member',
         required=True)
 
 
 class IGSInviteSiteMembers(IGSInvitationFields):
-    site_members = List(title=u'Site Members',
-      description=u'The members of this site that are not a member of '
-        u'this group.',
-      value_type=Choice(title=u'Group',
+    site_members = List(title='Site Members',
+      description='The members of this site that are not a member of '
+        'this group.',
+      value_type=Choice(title='Group',
                       vocabulary='groupserver.InviteMembersNonGroupMembers'),
       unique=True,
       required=True)
 
 
 class IGSResendInvitation(Interface):
-    userId = ASCIILine(title=u'User Identifier',
-      description=u'The user ID of the person receiving the '
-          u'invitation.',
+    userId = ASCIILine(title='User Identifier',
+      description='The user ID of the person receiving the '
+          'invitation.',
       required=True)
-    subject = TextLine(title=u'Subject',
-        description=u'The subject-line of the invitation.',
+    subject = TextLine(title='Subject',
+        description='The subject-line of the invitation.',
         required=True)
-    fromAddr = ASCIILine(title=u'From',
-        description=u'The email address of the person sending the '
-            u'invitation.',
+    fromAddr = ASCIILine(title='From',
+        description='The email address of the person sending the '
+            'invitation.',
         required=True)
-    toAddr = ASCIILine(title=u'To',
-        description=u'The email address of the person receiving the '
-            u'invitation.',
+    toAddr = ASCIILine(title='To',
+        description='The email address of the person receiving the '
+            'invitation.',
         required=True)
-    message = Text(title=u'Invitation Message',
-      description=u'The message that appears at the top of the email '
-          u'invitation to the new group member. The message will '
-          u'appear before the two links that allow the user to accept '
-          u'or reject the invitation.',
+    message = Text(title='Invitation Message',
+      description='The message that appears at the top of the email '
+          'invitation to the new group member. The message will '
+          'appear before the two links that allow the user to accept '
+          'or reject the invitation.',
       required=True)
