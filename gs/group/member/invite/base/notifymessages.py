@@ -12,8 +12,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from __future__ import unicode_literals
 from textwrap import TextWrapper
-from urllib import urlencode
+from urllib import quote
 from zope.cachedescriptors.property import Lazy
 from gs.content.email.base import GroupEmail, TextMixin
 from gs.profile.email.base import EmailUser
@@ -21,13 +22,13 @@ UTF8 = 'utf-8'
 
 
 def default_message(groupInfo):
-    m = u'Please accept this invitation to join {0}. I am inviting you '\
-        u'because...'
+    m = 'Please accept this invitation to join {0}. I am inviting you '\
+        'because...'
     return m.format(groupInfo.name)
 
 
 def default_subject(groupInfo):
-    r = u'Invitation to join {0} (Action required)'
+    r = 'Invitation to join {0} (Action required)'
     retval = r.format(groupInfo.name)
     return retval
 
@@ -35,17 +36,14 @@ def default_subject(groupInfo):
 class InvitationMessageMixin(object):
     @Lazy
     def supportEmail(self):
-        sub = u'Invitation to {0}'.format(self.groupInfo.name)
-        m = u'Hi!\n\nI received an invitation to join the group {0}\n    '\
-            u'{1}\nand...'
+        sub = 'Invitation to {0}'.format(self.groupInfo.name)
+        m = 'Hi!\n\nI received an invitation to join the group {0}\n    '\
+            '{1}\nand...'
         msg = m.format(self.groupInfo.name, self.groupInfo.url)
-        data = {
-          'Subject': sub.encode(UTF8),
-          'body': msg.encode(UTF8),
-        }
-        mailto = 'mailto:{0}?{1}'
-        retval = mailto.format(self.siteInfo.get_support_email(),
-                                urlencode(data))
+        mailto = 'mailto:{email}?Subject={subject}&body={body}'
+        retval = mailto.format(email=self.siteInfo.get_support_email(),
+                                subject=quote(sub.encode(UTF8)),
+                                body=quote(msg.encode(UTF8)))
         return retval
 
     def get_addr(self, userInfo):
@@ -98,8 +96,8 @@ class FormattedMessage(object):
 
     @Lazy
     def html(self):
-        withPara = self.originalMessage.replace(u'\n\n', u'</p><p>')
-        withBr = withPara.replace('u\n', u'<br/>')
+        withPara = self.originalMessage.replace('\n\n', '</p><p>')
+        withBr = withPara.replace('\n', '<br/>')
         retval = '<p>{0}</p>'.format(withBr)
         return retval
 
