@@ -36,8 +36,8 @@ def default_subject(groupInfo):
 class InvitationMessageMixin(object):
     @Lazy
     def supportEmail(self):
-        sub = 'Invitation to {0}'.format(self.groupInfo.name)
-        m = 'Hi!\n\nI received an invitation to join the group {0}\n    '\
+        sub = 'Group Membership Invitation'
+        m = 'Hi,\n\nI received an invitation to join the group {0}\n    '\
             '{1}\nand...'
         msg = m.format(self.groupInfo.name, self.groupInfo.url)
         mailto = 'mailto:{email}?Subject={subject}&body={body}'
