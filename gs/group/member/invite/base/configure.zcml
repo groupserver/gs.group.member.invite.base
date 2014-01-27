@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- Copyright © 2013 OnlineGroups.net and Contributors. -->
+<!-- Copyright © 2014 OnlineGroups.net and Contributors. -->
 <!-- All Rights Reserved. -->
 
 <!-- This software is subject to the provisions of the Zope Public -->
@@ -22,7 +22,7 @@
     class=".invite.InviteEditProfileForm"
     permission="zope2.ManageUsers"/>
   <browser:resource
-      name="gs-profile-invite-base-new-20131023.js"
+      name="gs-profile-invite-base-new-20140127.js"
       file="browser/javascript/edit_profile_invite.js"
       permission="zope2.Public" />
 
