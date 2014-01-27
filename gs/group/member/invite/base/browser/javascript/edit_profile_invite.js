@@ -5,23 +5,21 @@ function popupPreview (event) {
         uri = null, 
         messageBody = null, 
         toAddr = null,
-        toname = null
+        toName = null,
         fromAddr = null,
         subject = null;
     
     messageBody = jQuery('#form\\.message').val();
-    messageBody = messageBody.replace(/\ /g, '%20');
-    messageBody = messageBody.replace(/\n/g, '%0A');
-    uri = baseUri + '?form.message=' + messageBody;
+    uri = baseUri + '?form.message=' + encodeURIComponent(messageBody);
     uri = uri + '&form.fakeHeader=1'
     fromAddr = jQuery('#form\\.fromAddr').val();
-    uri = uri + '&form.fromAddr=' + fromAddr;
+    uri = uri + '&form.fromAddr=' + encodeURIComponent(fromAddr);
     toAddr = jQuery('#form\\.toAddr').val();
-    uri = uri + '&form.toAddr=' + toAddr;
+    uri = uri + '&form.toAddr=' + encodeURIComponent(toAddr);
     toName = jQuery('#form\\.fn').val() || '[Invited Person]';
-    uri = uri + '&form.toName=' + toName;
+    uri = uri + '&form.toName=' + encodeURIComponent(toName);
     subject = jQuery('#form\\.subject').val();
-    uri = uri + '&form.subject=' + subject.replace(/ /g, '%20');
+    uri = uri + '&form.subject=' + encodeURIComponent(subject);
     
     window.open(uri, 'Message Preview', 
                 'height=360,width=730,menubar=no,status=no,toolbar=no,scrollbars=yes');
