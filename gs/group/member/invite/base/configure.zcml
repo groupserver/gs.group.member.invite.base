@@ -44,12 +44,6 @@
     template="browser/templates/new-invitationmessage-txt.pt"
     permission="zope2.View"/>
 
-  <browser:page
-    name="resend_invitation.html"
-    for="gs.group.base.interfaces.IGSGroupMarker"
-    class=".reinvite.ResendInvitationForm"
-    permission="zope2.ManageUsers"/>
-
   <!-- The Invite Site Member Page -->
   <!--    The vocabulary of site members that are not group members-->
   <utility
