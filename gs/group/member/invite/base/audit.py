@@ -12,6 +12,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from __future__ import unicode_literals
 from pytz import UTC
 from datetime import datetime
 from zope.component.interfaces import IFactory
@@ -30,14 +31,14 @@ INVITE_OLD_USER = '2'
 INVITE_EXISTING_MEMBER = '3'
 WITHDRAW_INVITATION = '4'
 
-CSS_CLASS = u'audit-event profile-invite-event-{0}'
-EMAIL = u'<code class="email">%s</code>'
+CSS_CLASS = 'audit-event profile-invite-event-{0}'
+EMAIL = '<code class="email">{0}</code>'
 
 
 class AuditEventFactory(object):
     implements(IFactory)
-    title = u'User Profile Invitation Audit-Event Factory'
-    description = u'Creates a GroupServer audit event for invitations'
+    title = 'User Profile Invitation Audit-Event Factory'
+    description = 'Creates a GroupServer audit event for invitations'
 
     def __call__(self, context, event_id, code, date, userInfo,
                 instanceUserInfo, siteInfo, groupInfo, instanceDatum='',
@@ -85,8 +86,8 @@ class InviteNewUserEvent(BasicAuditEvent):
           SUBSYSTEM)
 
     def __unicode__(self):
-        r = u'Administrator {0} ({1}) inviting a new user {2} ({3}) with '\
-              u'address <{4}> to join {5} ({6}) on {7} ({8})'
+        r = 'Administrator {0} ({1}) inviting a new user {2} ({3}) with '\
+              'address <{4}> to join {5} ({6}) on {7} ({8})'
         retval = r.format(self.userInfo.name, self.userInfo.id,
                           self.instanceUserInfo.name, self.instanceUserInfo.id,
                           self.instanceDatum,
@@ -104,12 +105,12 @@ class InviteNewUserEvent(BasicAuditEvent):
         email = EMAIL.format(self.instanceDatum)
         ua = userInfo_to_anchor(self.instanceUserInfo)
         ga = groupInfo_to_anchor(self.groupInfo)
-        r = u'<span class="{0}">Invited the new user {1} (with the '\
-            u'email address {2}) to join {3}.</span>'
+        r = '<span class="{0}">Invited the new user {1} (with the '\
+            'email address {2}) to join {3}.</span>'
         retval = r.format(cssClass, ua, email, ga)
         if ((self.instanceUserInfo.id != self.userInfo.id)
             and not(self.userInfo.anonymous)):
-            retval = u'%s &#8212; %s' %\
+            retval = '%s &#8212; %s' %\
               (retval, userInfo_to_anchor(self.userInfo))
         return retval
 
@@ -130,8 +131,8 @@ class InviteOldUserEvent(BasicAuditEvent):
           SUBSYSTEM)
 
     def __unicode__(self):
-        r = u'Administrator {0} ({1}) inviting an existing user {2} ({3}) '\
-            u'with address <{4}> to join {5} ({6}) on {7} ({8})'
+        r = 'Administrator {0} ({1}) inviting an existing user {2} ({3}) '\
+            'with address <{4}> to join {5} ({6}) on {7} ({8})'
         retval = r.format(self.userInfo.name, self.userInfo.id,
                           self.instanceUserInfo.name, self.instanceUserInfo.id,
                           self.instanceDatum,
@@ -149,12 +150,12 @@ class InviteOldUserEvent(BasicAuditEvent):
         email = EMAIL.format(self.instanceDatum)
         ua = userInfo_to_anchor(self.instanceUserInfo)
         ga = groupInfo_to_anchor(self.groupInfo)
-        r = u'<span class="{0}">Invited the existing user {1} (with the '\
-            u'email address {2}) to join {3}.</span>'
+        r = '<span class="{0}">Invited the existing user {1} (with the '\
+            'email address {2}) to join {3}.</span>'
         retval = r.format(cssClass, ua, email, ga)
         if ((self.instanceUserInfo.id != self.userInfo.id)
             and not(self.userInfo.anonymous)):
-            retval = u'%s &#8212; %s' %\
+            retval = '%s &#8212; %s' %\
               (retval, userInfo_to_anchor(self.userInfo))
         return retval
 
@@ -176,9 +177,9 @@ class InviteExistingMemberEvent(BasicAuditEvent):
           SUBSYSTEM)
 
     def __unicode__(self):
-        r = u'Administrator {0} ({1}) tried to invite an existing group '\
-              u'member {2} ({3}) with address <{4}> to join {5} ({6}) on {7} '\
-              u'({8})'
+        r = 'Administrator {0} ({1}) tried to invite an existing group '\
+              'member {2} ({3}) with address <{4}> to join {5} ({6}) on {7} '\
+              '({8})'
         retval = r.format(self.userInfo.name, self.userInfo.id,
                           self.instanceUserInfo.name, self.instanceUserInfo.id,
                           self.instanceDatum,
@@ -196,12 +197,12 @@ class InviteExistingMemberEvent(BasicAuditEvent):
         email = EMAIL.format(self.instanceDatum)
         ua = userInfo_to_anchor(self.instanceUserInfo)
         ga = groupInfo_to_anchor(self.groupInfo)
-        r = u'<span class="{0}">Tried to invite the existing member '\
-            u' {1} (with email {2}) to join {3}.</span>'
+        r = '<span class="{0}">Tried to invite the existing member '\
+            ' {1} (with email {2}) to join {3}.</span>'
         retval = r.format(cssClass, ua, email, ga)
         if ((self.instanceUserInfo.id != self.userInfo.id)
             and not(self.userInfo.anonymous)):
-            retval = u'%s &#8212; %s' %\
+            retval = '%s &#8212; %s' %\
               (retval, userInfo_to_anchor(self.userInfo))
         return retval
 
@@ -222,8 +223,8 @@ class WithdrawInvitationEvent(BasicAuditEvent):
           siteInfo, groupInfo, None, None, SUBSYSTEM)
 
     def __unicode__(self):
-        r = u'Administrator {0} ({1}) withdrew the invitation to {2} ({3}) '\
-            u'to join {4} ({5}) on {6} ({7})'
+        r = 'Administrator {0} ({1}) withdrew the invitation to {2} ({3}) '\
+            'to join {4} ({5}) on {6} ({7})'
         retval = r.format(self.userInfo.name, self.userInfo.id,
                         self.instanceUserInfo.name, self.instanceUserInfo.id,
                         self.groupInfo.name, self.groupInfo.id,
@@ -236,14 +237,14 @@ class WithdrawInvitationEvent(BasicAuditEvent):
 
     @property
     def xhtml(self):
-        cssClass = u'audit-event profile-invite-event-%s' % self.code
-        retval = u'<span class="%s">Withdrew the invitation to '\
-            u'join %s from %s.</span>' %\
+        cssClass = 'audit-event profile-invite-event-%s' % self.code
+        retval = '<span class="%s">Withdrew the invitation to '\
+            'join %s from %s.</span>' %\
             (cssClass, groupInfo_to_anchor(self.groupInfo),
              userInfo_to_anchor(self.instanceUserInfo))
         if ((self.instanceUserInfo.id != self.userInfo.id)
             and not(self.userInfo.anonymous)):
-            retval = u'%s &#8212; %s' %\
+            retval = '%s &#8212; %s' %\
               (retval, userInfo_to_anchor(self.userInfo))
         return retval
 
