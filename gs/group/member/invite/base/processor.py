@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,7 +12,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 from email.utils import parseaddr
 from zope.formlib import form
 from Products.CustomUserFolder.interfaces import IGSUserInfo
@@ -75,7 +75,7 @@ class InviteProcessor(object):
         toAddr = data['toAddr'].strip()
         addrName, addr = parseaddr(toAddr)
 
-        emailChecker = NewEmailAddress(title=u'Email')
+        emailChecker = NewEmailAddress(title='Email')
         emailChecker.context = self.context
 
         try:
