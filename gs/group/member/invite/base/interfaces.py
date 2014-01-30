@@ -111,27 +111,3 @@ class IGSInviteSiteMembers(IGSInvitationFields):
                       vocabulary='groupserver.InviteMembersNonGroupMembers'),
       unique=True,
       required=True)
-
-
-class IGSResendInvitation(Interface):
-    userId = ASCIILine(title='User Identifier',
-      description='The user ID of the person receiving the '
-          'invitation.',
-      required=True)
-    subject = TextLine(title='Subject',
-        description='The subject-line of the invitation.',
-        required=True)
-    fromAddr = ASCIILine(title='From',
-        description='The email address of the person sending the '
-            'invitation.',
-        required=True)
-    toAddr = ASCIILine(title='To',
-        description='The email address of the person receiving the '
-            'invitation.',
-        required=True)
-    message = Text(title='Invitation Message',
-      description='The message that appears at the top of the email '
-          'invitation to the new group member. The message will '
-          'appear before the two links that allow the user to accept '
-          'or reject the invitation.',
-      required=True)
