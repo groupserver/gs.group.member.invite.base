@@ -13,14 +13,13 @@
 #
 ##############################################################################
 from __future__ import absolute_import, unicode_literals
-from email.utils import parseaddr
 from zope.formlib import form
 from Products.CustomUserFolder.interfaces import IGSUserInfo
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from Products.GSProfile.utils import create_user_from_email
 from gs.content.form.utils import enforce_schema
-from gs.profile.email.base.emailaddress import NewEmailAddress, \
-    EmailAddressExists
+from gs.profile.email.base import NewEmailAddress, EmailAddressExists, \
+    sanitise_address
 from gs.group.member.base import user_member_of_group
 from .audit import Auditor, INVITE_NEW_USER, INVITE_OLD_USER, \
     INVITE_EXISTING_MEMBER
@@ -72,8 +71,7 @@ class InviteProcessor(object):
         userInfo = None
 
         acl_users = self.context.acl_users
-        toAddr = data['toAddr'].strip()
-        addrName, addr = parseaddr(toAddr)
+        toAddr = sanitise_address(data['toAddr'])
 
         emailChecker = NewEmailAddress(title='Email')
         emailChecker.context = self.context
@@ -81,16 +79,16 @@ class InviteProcessor(object):
         try:
             emailChecker.validate(toAddr)  # Can handle a full address
         except EmailAddressExists:
-            user = acl_users.get_userByEmail(addr)  # Cannot
-            assert user, 'User for address <%s> not found' % addr
+            user = acl_users.get_userByEmail(toAddr)  # Cannot
+            assert user, 'User for address <%s> not found' % toAddr
             userInfo = IGSUserInfo(user)
             auditor, inviter = self.get_auditor_inviter(userInfo)
             if user_member_of_group(user, self.groupInfo):
-                auditor.info(INVITE_EXISTING_MEMBER, addr)
+                auditor.info(INVITE_EXISTING_MEMBER, toAddr)
                 status_code = INVITE_EXISTING_MEMBER
             else:
                 inviteId = inviter.create_invitation(data, False)
-                auditor.info(INVITE_OLD_USER, addr)
+                auditor.info(INVITE_OLD_USER, toAddr)
                 inviter.send_notification(data['subject'],
                                           data['message'],
                                           inviteId,
@@ -104,10 +102,10 @@ class InviteProcessor(object):
             self.add_profile_attributes(userInfo, data)
             auditor, inviter = self.get_auditor_inviter(userInfo)
             inviteId = inviter.create_invitation(data, True)
-            auditor.info(INVITE_NEW_USER, addr)
+            auditor.info(INVITE_NEW_USER, toAddr)
             inviter.send_notification(data['subject'], data['message'],
                                       inviteId, data['fromAddr'],
-                                      addr)  # Note the to-addr
+                                      toAddr)  # Note the to-addr
             self.set_delivery(userInfo, data['delivery'])
             status_code = INVITE_NEW_USER
 

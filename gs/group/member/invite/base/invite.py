@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,7 +12,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
@@ -30,7 +30,7 @@ from .processor import InviteProcessor
 
 
 class InviteEditProfileForm(GroupForm):
-    label = u'Invite a New Group Member'
+    label = 'Invite a New Group Member'
     # Why is abscompath needed?
     #pageTemplateFileName = abscompath(gs.group.member.invite.base,
     #                                'browser/templates/edit_profile_invite.pt')
@@ -70,7 +70,7 @@ class InviteEditProfileForm(GroupForm):
             self.request, form=self, data=data,
             ignore_request=ignore_request)
 
-    @form.action(label=u'Invite', failure='handle_invite_action_failure')
+    @form.action(label='Invite', failure='handle_invite_action_failure')
     def handle_invite(self, action, data):
         inviteProcessor = InviteProcessor(self.context, self.request,
                                           self.siteInfo, self.groupInfo,
@@ -80,33 +80,33 @@ class InviteEditProfileForm(GroupForm):
 
         # Prep data for display
         addrName, addr = parseaddr(data['toAddr'].strip())
-        e = u'<code class="email">%s</code>' % addr
+        e = '<code class="email">%s</code>' % addr
         g = groupInfo_to_anchor(self.groupInfo)
         u = userInfo_to_anchor(userInfo)
 
         if result == INVITE_NEW_USER:
-            m = u'<li>A profile for {0} has been created, and given the '\
-                u'email address {1}.</li>\n'\
-                u'<li>{0} has been sent an invitation to join {2}.</li>'
+            m = '<li>A profile for {0} has been created, and given the '\
+                'email address {1}.</li>\n'\
+                '<li>{0} has been sent an invitation to join {2}.</li>'
             self.status = m.format(u, e, g)
 
         elif result == INVITE_OLD_USER:
-            m = u'<li>Inviting the existing person with the email address '\
-                u'{0} &#8213; {1} &#8213; to join {2}.</li>'
+            m = '<li>Inviting the existing person with the email address '\
+                '{0} &#8213; {1} &#8213; to join {2}.</li>'
             self.status = m.format(e, u, g)
 
         elif result == INVITE_EXISTING_MEMBER:
-            m = u'<li>The person with the email address {0} &#8213; {1} '\
-                u'&#8213; is already a member of {2}.</li>\n'\
-                u'<li>No changes to the profile of {1} have been made.</li>'
+            m = '<li>The person with the email address {0} &#8213; {1} '\
+                '&#8213; is already a member of {2}.</li>\n'\
+                '<li>No changes to the profile of {1} have been made.</li>'
             self.status = m.format(e, u, g)
 
         else:
             # What happened?
-            m = u'<li>An unknown event occurred while attempting to invite '\
-                u'the person with the email address {0} &#8213; {1} '\
-                u'&#8213; is already a member of {2}.</li>\n'\
-                u'<li>No changes to the profile of {1} have been made.</li>'
+            m = '<li>An unknown event occurred while attempting to invite '\
+                'the person with the email address {0} &#8213; {1} '\
+                '&#8213; is already a member of {2}.</li>\n'\
+                '<li>No changes to the profile of {1} have been made.</li>'
             self.status = m.format(e, u, g)
 
         self.status = '<ul>\n{0}\n</ul>'.format(self.status)
@@ -115,9 +115,9 @@ class InviteEditProfileForm(GroupForm):
 
     def handle_invite_action_failure(self, action, data, errors):
         if len(errors) == 1:
-            self.status = u'<p>There is an error:</p>'
+            self.status = '<p>There is an error:</p>'
         else:
-            self.status = u'<p>There are errors:</p>'
+            self.status = '<p>There are errors:</p>'
 
     # Non-Standard methods below this point
     @property
