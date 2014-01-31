@@ -31,17 +31,17 @@ class IGSInvitationMessage(Interface):
           required=False,
           default=False)
 
-    toAddr = ASCIILine(title='To',
+    toAddr = TextLine(title='To',
         description='The email address of the person receiving the '
             'invitation.',
         required=False)
 
-    fromAddr = ASCIILine(title='To',
+    fromAddr = TextLine(title='To',
         description='The email address of the person sending the '
             'invitation.',
         required=False)
 
-    supportAddr = ASCIILine(title='Support',
+    supportAddr = TextLine(title='Support',
         description='The email address of the support-group.',
         required=False)
 
