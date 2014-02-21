@@ -12,8 +12,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from __future__ import unicode_literals
 from zope.component import createObject, getMultiAdapter
 from zope.cachedescriptors.property import Lazy
+from gs.core import to_ascii
 from gs.profile.notify import MessageSender
 UTF8 = 'utf-8'
 
@@ -25,7 +27,8 @@ class InvitationNotifier(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.oldContentType = self.request.response.getHeader('Content-Type')
+        h = self.request.response.getHeader('Content-Type')
+        self.oldContentType = to_ascii(h)
 
     @Lazy
     def groupInfo(self):
@@ -67,4 +70,5 @@ class InvitationNotifier(object):
                                     message=message, fakeHeader=False)
         ms = MessageSender(self.context, userInfo)
         ms.send_message(subject, text, html, fromAddr, toAddrs)
-        self.request.response.setHeader('Content-Type', self.oldContentType)
+        self.request.response.setHeader(to_ascii('Content-Type'),
+                                        self.oldContentType)
