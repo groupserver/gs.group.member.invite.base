@@ -3,7 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="context/@@groupserver_email_layout/page">
   <head>
-    <title metal:fill-slot="title">Invitation: 
+    <title metal:fill-slot="title">Invitation:
       <span tal:replace="view/siteInfo/name">Site</span></title>
   </head>
   <body>
@@ -11,10 +11,11 @@
          tal:condition="fakeHeader"
          id="gs-group-member-invite-base-message-fakeheader"
          metal:fill-slot="prebody">
-      <h4><a title="Close" class="btn btn-mini pull-right" 
+      <h4><a title="Close" class="btn btn-mini pull-right"
              href="javascript:window.close();">&#215;</a>
       Message Preview</h4>
-      <pre tal:define="fromAddr python:options.get('fromAddr', None) or view.request.form.get('form.fromAddr', None) or view.get_addr(adminInfo);
+      <pre tal:define="userInfo options/userInfo | view/loggedInUserInfo;
+                       fromAddr python:options.get('fromAddr', None) or view.request.form.get('form.fromAddr', None) or view.get_addr(adminInfo);
                 toAddr python:options.get('toAddr', None) or view.request.form.get('form.toAddr', None) or view.get_addr(userInfo);
                 subject options/subject | view/request/form/form.subject | view/defaultSubject;"><strong>From:    </strong><code tal:content="fromAddr">user@domain</code>
 <strong>To:      </strong><span tal:content="toAddr">user@domain</span>
@@ -29,7 +30,7 @@
                      message options/message | view/request/form/form.message | view/defaultMessage;">
       <h2>Invitation to join
       <span tal:content="view/groupInfo/name">This Group</span></h2>
-      <!--  Provide personalized content in social networking updates and 
+      <!--  Provide personalized content in social networking updates and
            -     reminders.
            * Name-->
       <p>
@@ -37,11 +38,11 @@
         <span tal:content="toName">New Member</span>,
       </p>
       <p>
-        You have been invited to join 
+        You have been invited to join
         <span tal:content="view/groupInfo/name">this group</span>.
       </p>
       <!--  When messages are sent from another member, use the member’s
-           -     name as the From information and allow the sender to include 
+           -     name as the From information and allow the sender to include
            -     a personal note to the recipient.-->
       <p>
         <span tal:content="adminInfo/name">this administrator</span>
@@ -52,7 +53,7 @@
           Replace me
         </p>
       </blockquote>
-      <!--  When action is required, allow users to initiate it from the 
+      <!--  When action is required, allow users to initiate it from the
            -     email.-->
       <p>
         Click on the following link to accept or decline this invitation:
@@ -66,14 +67,14 @@
            tal:attributes="href uri"
            href="#"><code tal:content="uri">URL</code></a>
       </p>
-      <!--  Provide details about the site or service in messages that 
+      <!--  Provide details about the site or service in messages that
            -     non-members receive.
            -     * Group name, short description, privacy, stats -->
-      <h3>About 
+      <h3>About
       <span tal:content="view/groupInfo/name">This Group</span></h3>
       <div>
         <p tal:define="rlg python:view.groupInfo.get_property('real_life_group')">
-          <span tal:content="view/groupInfo/name">The group</span> 
+          <span tal:content="view/groupInfo/name">The group</span>
           is an online group for
           <span tal:content="rlg">real people doing real things</span>.
           <tal:block define="groupId view/groupInfo/id"
@@ -86,14 +87,14 @@
           The group privacy.
         </tal:block>
       </div>
-      <!--  When a member is requesting to network, offer sufficient details 
+      <!--  When a member is requesting to network, offer sufficient details
            -       about the individual.
            -     * Name, photo, bio-->
-      <h3>About 
+      <h3>About
       <span tal:content="adminInfo/name">This Admin</span></h3>
       <div>
         <p>
-          <span tal:content="adminInfo/name">The administrator</span> 
+          <span tal:content="adminInfo/name">The administrator</span>
           is the administrator of
           <span tal:content="view/groupInfo/name">the group</span>.
           The main role of an administrator is to manage the members of
@@ -104,14 +105,14 @@
       <p>
         If you have any problems, email us at
         <a tal:attributes="href view/supportEmail"
-           href="#"><code tal:content="view/siteInfo/get_support_email">this 
+           href="#"><code tal:content="view/siteInfo/get_support_email">this
         address</code></a>
       </p>
       <!--Website address-->
       <p>
         Kind regards<br/>
-        <span>The 
-        <span tal:content="view/siteInfo/name">Site</span> 
+        <span>The
+        <span tal:content="view/siteInfo/name">Site</span>
         Team</span>
       </p>
     </div>
