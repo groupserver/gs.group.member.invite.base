@@ -18,7 +18,7 @@ from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
-from gs.content.form import radio_widget, multi_check_box_widget
+from gs.content.form.base import radio_widget, multi_check_box_widget
 from gs.profile.email.base.emailuser import EmailUser
 from gs.group.base import GroupForm
 from .interfaces import IGSInviteSiteMembers

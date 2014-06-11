@@ -20,7 +20,7 @@ from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.CustomUserFolder.userinfo import userInfo_to_anchor
 from Products.GSGroup.groupInfo import groupInfo_to_anchor
 #from Products.GSProfile.edit_profile import wym_editor_widget
-from gs.content.form import select_widget, radio_widget
+from gs.content.form.base import select_widget, radio_widget
 from gs.group.base import GroupForm
 from gs.profile.email.base.emailuser import EmailUser
 from .invitefields import InviteFields
