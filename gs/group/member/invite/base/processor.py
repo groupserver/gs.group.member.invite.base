@@ -17,7 +17,7 @@ from zope.formlib import form
 from Products.CustomUserFolder.interfaces import IGSUserInfo
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from Products.GSProfile.utils import create_user_from_email
-from gs.content.form.utils import enforce_schema
+from gs.content.form.base.utils import enforce_schema
 from gs.profile.email.base import NewEmailAddress, EmailAddressExists, \
     sanitise_address
 from gs.group.member.base import user_member_of_group
