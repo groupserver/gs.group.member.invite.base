@@ -12,7 +12,7 @@ CREATE TABLE user_group_member_invitation (
     response_date        TIMESTAMP WITH TIME ZONE    DEFAULT NULL,
     accepted             BOOL                        DEFAULT FALSE,
     withdrawn_date       TIMESTAMP WITH TIME ZONE    DEFAULT NULL,
-    withdrawing_user_id  TIMESTAMP WITH TIME ZONE    DEFAULT NULL
+    withdrawing_user_id  TEXT                        DEFAULT NULL
 );
 --=mpj17=-- There is no foreign key for user_id, yet
 
