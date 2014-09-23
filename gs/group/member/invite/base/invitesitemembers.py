@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,8 +11,8 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
-from __future__ import absolute_import
+############################################################################
+from __future__ import absolute_import, unicode_literals
 from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
 from zope.formlib import form
@@ -28,7 +28,7 @@ from .audit import Auditor, INVITE_OLD_USER
 
 
 class GSInviteSiteMembersForm(GroupForm):
-    label = u'Invite Site Members'
+    label = 'Invite site members'
     pageTemplateFileName = 'browser/templates/invitesitemembers.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
@@ -63,39 +63,38 @@ class GSInviteSiteMembersForm(GroupForm):
             self.request, form=self, data=data,
             ignore_request=ignore_request)
 
-    @form.action(label=u'Invite', failure='handle_invite_action_failure')
+    @form.action(label='Invite', failure='handle_invite_action_failure')
     def handle_invite(self, action, data):
         for userId in data['site_members']:
             ctx = get_the_actual_instance_from_zope(self.context)
             userInfo = createObject('groupserver.UserFromId', ctx,
-                                        userId)
-            inviter = Inviter(ctx, self.request, userInfo,
-                        self.adminInfo, self.siteInfo, self.groupInfo)
+                                    userId)
+            inviter = Inviter(ctx, self.request, userInfo, self.adminInfo,
+                              self.siteInfo, self.groupInfo)
             inviteId = inviter.create_invitation(data, False)
             auditor = Auditor(self.siteInfo, self.groupInfo,
-                        self.adminInfo, userInfo)
+                              self.adminInfo, userInfo)
             auditor.info(INVITE_OLD_USER)
             inviter.send_notification(data['subject'], data['message'],
-                                        inviteId, data['fromAddr'])
+                                      inviteId, data['fromAddr'])
 
             s = '{0}\n<li><a href="{1}">{2}</a></li>\n'
             self.status = s.format(self.status, userInfo.url, userInfo.name)
             self.set_delivery(userInfo, data['delivery'])
 
-        self.status = u'<p>Invited the following users to '\
-          u'join <a class="fn" href="%s">%s</a></p><ul>%s</ul>' %\
+        self.status = '<p>Invited the following users to '\
+            'join <a class="fn" href="%s">%s</a></p><ul>%s</ul>' %\
             (self.groupInfo.relativeURL, self.groupInfo.name, self.status)
 
         if not(data['site_members']):
-            self.status = u'<p>No site members were selected.</p>'
+            self.status = '<p>No site members were selected.</p>'
         assert self.status
-        assert type(self.status) == unicode
 
     def handle_invite_action_failure(self, action, data, errors):
         if len(errors) == 1:
-            self.status = u'<p>There is an error:</p>'
+            self.status = '<p>There is an error:</p>'
         else:
-            self.status = u'<p>There are errors:</p>'
+            self.status = '<p>There are errors:</p>'
 
     def set_delivery(self, userInfo, delivery):
         if delivery == 'email':
