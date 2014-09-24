@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,12 +11,13 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import unicode_literals
 from textwrap import TextWrapper
 from urllib import quote
 from zope.cachedescriptors.property import Lazy
 from gs.content.email.base import GroupEmail, TextMixin
+from gs.core import to_unicode_or_bust
 from gs.profile.email.base import EmailUser
 UTF8 = 'utf-8'
 
@@ -42,8 +43,8 @@ class InvitationMessageMixin(object):
         msg = m.format(self.groupInfo.name, self.groupInfo.url)
         mailto = 'mailto:{email}?Subject={subject}&body={body}'
         retval = mailto.format(email=self.siteInfo.get_support_email(),
-                                subject=quote(sub.encode(UTF8)),
-                                body=quote(msg.encode(UTF8)))
+                               subject=quote(sub.encode(UTF8)),
+                               body=quote(msg.encode(UTF8)))
         return retval
 
     def get_addr(self, userInfo):
@@ -92,7 +93,7 @@ class InvitationMessageText(InvitationMessage, TextMixin):
 
 class FormattedMessage(object):
     def __init__(self, message):
-        self.originalMessage = message
+        self.originalMessage = to_unicode_or_bust(message)
 
     @Lazy
     def html(self):
