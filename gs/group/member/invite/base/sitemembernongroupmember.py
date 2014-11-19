@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,7 +11,8 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
+from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
 from zope.interface import implements, providedBy
 from zope.component import createObject
@@ -66,9 +67,9 @@ class SiteMembersNonGroupMembers(object):
         the group, and who have an email address.'''
         # OPTIMIZE: This could *mostly* be done with lists of IDs
         retval = [EmailUser(self.context, ui)
-                    for ui in self.siteMembers.members
-                    if ((not user_member_of_group(ui, self.groupInfo))
-                        and self.has_addr(ui))]
+                  for ui in self.siteMembers.members
+                  if ((not user_member_of_group(ui, self.groupInfo))
+                      and self.has_addr(ui))]
         assert type(retval) == list
         return retval
 
@@ -80,7 +81,7 @@ class SiteMembersNonGroupMembers(object):
     def get_display_name(self, emailUser):
         userInfo = emailUser.userInfo
         addr = emailUser.get_delivery_addresses()[0]
-        r = u'{0} (<code class="email">{1}</code>)'
+        r = '{0} (<code class="email">{1}</code>)'
         retval = r.format(userInfo.name, addr)
         return retval
 
