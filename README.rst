@@ -7,7 +7,7 @@ Send an invitation to join a group
 
 :Author: `Michael JasonSmith`_
 :Contact: Michael JasonSmith <mpj17@onlinegroups.net>
-:Date: 2013-03-19
+:Date: 2014-11-19
 :Organization: `GroupServer.org`_
 :Copyright: This document is licensed under a
   `Creative Commons Attribution-Share Alike 3.0 New Zealand License`_
@@ -84,7 +84,7 @@ to send the message.
 Resources
 =========
 
-- Code repository: https://source.iopen.net/groupserver/gs.group.member.invite.base
+- Code repository: https://github.com/groupserver/gs.group.member.invite.base
 - Questions and comments to http://groupserver.org/groups/development
 - Report bugs at https://redmine.iopen.net/projects/groupserver
 
@@ -96,9 +96,9 @@ Resources
    http://creativecommons.org/licenses/by-sa/3.0/nz/
 
 .. [#profile] See
-              <https://source.iopen.net/groupserver/gs.profile.invite>
+              <https://github.com/groupserver/gs.profile.invite>
 
 .. [#csv] See
-          <https://source.iopen.net/groupserver/gs.group.member.invite.csv>
+          <https://github.com/groupserver/gs.group.member.invite.csv>
 
-.. [#notify] See           <https://source.iopen.net/groupserver/gs.profile.notify>
+.. [#notify] See <https://github.com/groupserver/gs.profile.notify>
