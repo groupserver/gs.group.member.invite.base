@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import absolute_import, unicode_literals
 from zope.formlib import form
 from Products.CustomUserFolder.interfaces import IGSUserInfo
@@ -28,27 +28,29 @@ from .utils import set_digest
 
 
 class InviteProcessor(object):
-    """
-        Class that does the technical work of inviting a user based on data
-        provided by another user.
-    """
+    """The class that does the technical work of inviting a user based on
+data provided by another user.
 
-    def __init__(self, context, request, siteInfo, groupInfo, invitingUserInfo,
-                 form_fields, inviteFields):
-        """
-            Input: context - Zope context object. Should be a Group context.
-                   request - Zope request that is causing this invitation.
-                   siteInfo - SiteInfo object for the Site that a user is
-                              joining a group in.
-                   groupInfo - GroupInfo object for the Group that a user is
-                               being invited to.
-                   invitingUserInfo - UserInfo object representing the user who
-                                      is doing the inviting
-                   form_fields - zope.formlib.Fields used by the *Form that is
-                                 creating an instance of InviteProcessor
-                   inviteFields - InviteFields object that governs what data is
-                                  required to process the invite.
-        """
+:param object context: Zope context object. Should be a Group context.
+:param object request: Zope request that is causing this invitation.
+:param siteInfo: SiteInfo object for the Site that a user is joining a
+                 group in.
+:type siteInfo: :class:`Products.GSContent.interfaces.IGSSiteInfo
+:param groupInfo: GroupInfo object for the Group that a user is being
+                  invited to.
+:type groupInfo: :class:`Products.GSGroup.interfaces.IGSGroupInfo`
+:param invitingUserInfo: UserInfo object representing the user who is doing
+                         the inviting
+:type invitingUserInfo:
+        :class:`Products.CustomUserFolder.interfaces.IGSUserInfo`
+:param form_fields: The fileds used by the form that is creating an
+                    instance of :class:`InviteProcessor`
+:type form_fields: :class:`zope.formlib.Fields`
+:param inviteFields: InviteFields object that governs what data is
+                     required to process the invite."""
+
+    def __init__(self, context, request, siteInfo, groupInfo,
+                 invitingUserInfo, form_fields, inviteFields):
         self.context = context
         self.request = request
         self.siteInfo = siteInfo
@@ -58,16 +60,15 @@ class InviteProcessor(object):
         self.inviteFields = inviteFields
 
     def process(self, data):
-        """
-            Attempt to invite a user to join a group based on the provided
-            data.
+        """Attempt to invite a user to join a group based on the provided
+data.
 
-            Input: data - A dict of data submitted to a *Form, assumed to be
-                          data used to invite a person to a group
-            Output: If successful, a tuple - (status_code, userInfo) -
-                    containing a status code indicating the result of
-                    processing the invite and an IGSUserInfo instance
-        """
+:param dict data: The data submitted to the form, assumed to be data used
+                  to invite a person to a group
+:returns: If successful, a 2-tuple of ``(status_code, userInfo)``
+          containing a status code indicating the result of processing the
+          invite and an IGSUserInfo instance
+:rtype: tuple"""
         userInfo = None
 
         acl_users = self.context.acl_users
@@ -89,6 +90,9 @@ class InviteProcessor(object):
             else:
                 inviteId = inviter.create_invitation(data, False)
                 auditor.info(INVITE_OLD_USER, toAddr)
+                # TODO: a DMARC lookup on the From. If there is DMARC on
+                #       then construct a From from the support-email and the
+                #       group-administrator's name
                 inviter.send_notification(data['subject'],
                                           data['message'],
                                           inviteId,
@@ -124,31 +128,29 @@ class InviteProcessor(object):
         set_digest(userInfo, self.groupInfo, data)
 
     def get_auditor_inviter(self, userInfo):
-        """
-            Retrives the Inviter and Auditor objects that will be used to
-            invite the user.
+        """Retrives the Inviter and Auditor objects that will be used to
+invite the user.
 
-            Input: userInfo - A UserInfo instance of the user who will be
-                              invited.
-            Output: A tuple - (Auditor, Inviter)
-        """
+:param userInfo: The user who will be invited.
+:type userInfo: :class:`Products.CustomUserFolder.interfaces.IGSUserInfo`
+:returns: A 2-tuple ``(Auditor, Inviter)``
+:rtype: tuple"""
         ctx = get_the_actual_instance_from_zope(self.context)
-        inviter = Inviter(ctx, self.request, userInfo, self.invitingUserInfo,
+        inviter = Inviter(ctx, self.request, userInfo,
+                          self.invitingUserInfo,
                           self.siteInfo, self.groupInfo)
         auditor = Auditor(self.siteInfo, self.groupInfo,
                           self.invitingUserInfo, userInfo)
         return (auditor, inviter)
 
     def set_delivery(self, userInfo, delivery):
-        """
-            Convenience method for setting the delivery method of a user in a
-            group.
+        """Convenience method for setting the delivery method of a user in
+a group.
 
-            Input: userInfo - A UserInfo instance of the user to set delivery
-                              for.
-                   delivery - A string indicating the desired delivery setting.
-                              Allowed values are 'email', 'digest', and 'web'.
-        """
+:param userInfo: The user to set delivery for.
+:type userInfo: :class:`Products.CustomUserFolder.interfaces.IGSUserInfo`
+:param str delivery: The desired delivery setting. Allowed values are
+                    ``email``, ``digest``, and ``web``."""
         if delivery == 'email':
             # --=mpj17=-- The default is one email per post
             pass
