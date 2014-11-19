@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2013, 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import unicode_literals
 from zope.component import createObject, getMultiAdapter
 from zope.cachedescriptors.property import Lazy
@@ -33,7 +33,8 @@ class InvitationNotifier(object):
     @Lazy
     def groupInfo(self):
         retval = createObject('groupserver.GroupInfo', self.context)
-        assert retval, 'Could not create the GroupInfo from %s' % self.context
+        assert retval, \
+            'Could not create the GroupInfo from %s' % self.context
         return retval
 
     @Lazy
@@ -46,28 +47,28 @@ class InvitationNotifier(object):
     @Lazy
     def textTemplate(self):
         retval = getMultiAdapter((self.context, self.request),
-                    name=self.textTemplateName)
+                                 name=self.textTemplateName)
         assert retval
         return retval
 
     @Lazy
     def htmlTemplate(self):
         retval = getMultiAdapter((self.context, self.request),
-                    name=self.htmlTemplateName)
+                                 name=self.htmlTemplateName)
         assert retval
         return retval
 
     def notify(self, adminInfo, userInfo, fromAddr, toAddrs,
-                invitationId, subject, message):
+               invitationId, subject, message):
         assert toAddrs, 'No to address for %s' % userInfo.name
         text = self.textTemplate(adminInfo=adminInfo, userInfo=userInfo,
-                                    fromAddr=fromAddr, toAddr=toAddrs[0],
-                                    subject=subject, invitationId=invitationId,
-                                    message=message, fakeHeader=False)
+                                 fromAddr=fromAddr, toAddr=toAddrs[0],
+                                 subject=subject, invitationId=invitationId,
+                                 message=message, fakeHeader=False)
         html = self.htmlTemplate(adminInfo=adminInfo, userInfo=userInfo,
-                                    fromAddr=fromAddr, toAddr=toAddrs[0],
-                                    subject=subject, invitationId=invitationId,
-                                    message=message, fakeHeader=False)
+                                 fromAddr=fromAddr, toAddr=toAddrs[0],
+                                 subject=subject, invitationId=invitationId,
+                                 message=message, fakeHeader=False)
         ms = MessageSender(self.context, userInfo)
         ms.send_message(subject, text, html, fromAddr, toAddrs)
         self.request.response.setHeader(to_ascii('Content-Type'),

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
 from __future__ import absolute_import, unicode_literals
 from email.utils import parseaddr
 from zope.cachedescriptors.property import Lazy
@@ -33,7 +33,7 @@ class InviteEditProfileForm(GroupForm):
     label = 'Invite a New Group Member'
     # Why is abscompath needed?
     #pageTemplateFileName = abscompath(gs.group.member.invite.base,
-    #                                'browser/templates/edit_profile_invite.pt')
+    #                           'browser/templates/edit_profile_invite.pt')
     pageTemplateFileName = 'browser/templates/edit_profile_invite.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
@@ -74,7 +74,8 @@ class InviteEditProfileForm(GroupForm):
     def handle_invite(self, action, data):
         inviteProcessor = InviteProcessor(self.context, self.request,
                                           self.siteInfo, self.groupInfo,
-                                          self.loggedInUser, self.form_fields,
+                                          self.loggedInUser,
+                                          self.form_fields,
                                           self.inviteFields)
         result, userInfo = inviteProcessor.process(data)
 
