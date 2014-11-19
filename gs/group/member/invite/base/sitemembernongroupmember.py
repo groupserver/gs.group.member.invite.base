@@ -70,6 +70,7 @@ class SiteMembersNonGroupMembers(object):
                   for ui in self.siteMembers.members
                   if ((not user_member_of_group(ui, self.groupInfo))
                       and self.has_addr(ui))]
+        retval.sort(key=lambda eu: eu.userInfo.name)
         assert type(retval) == list
         return retval
 
