@@ -87,7 +87,7 @@ setup(
         'gs.help',
         'gs.profile.email.base',
         'gs.profile.notify',
-        'gs.site.member',
+        'gs.site.member.base',
         'Products.CustomUserFolder',
         'Products.GSAuditTrail',
         'Products.GSContent',
