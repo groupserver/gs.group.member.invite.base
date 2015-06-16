@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014, 2015 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -22,7 +22,7 @@ from zope.schema.interfaces import IVocabulary, IVocabularyTokenized, \
 from zope.interface.common.mapping import IEnumerableMapping
 from gs.group.member.base import user_member_of_group
 from gs.profile.email.base.emailuser import EmailUser
-from gs.site.member import SiteMembers
+from gs.site.member.base import SiteMembers
 
 
 class SiteMembersNonGroupMembers(object):

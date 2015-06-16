@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2015 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -14,7 +14,7 @@
 ##############################################################################
 from zope.cachedescriptors.property import Lazy
 from gs.group.member.viewlet import GroupAdminViewlet
-from gs.site.member import SiteMembers
+from gs.site.member.base import SiteMembers
 from Products.GSGroupMember.groupmembership import GroupMembers
 
 
