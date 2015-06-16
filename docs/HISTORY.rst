@@ -184,3 +184,5 @@ Changelog
 ------------------
 
 * Initial release
+
+..  LocalWords:  Changelog GitHub reStructuredText
