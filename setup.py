@@ -96,6 +96,7 @@ setup(
         'Products.GSProfile',
         'Products.XWFCore',
     ],
+    extras_require={'docs': ['Sphinx']},
     entry_points="""
     # -*- Entry points: -*-
     """,
