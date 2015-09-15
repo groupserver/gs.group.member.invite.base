@@ -4,7 +4,7 @@
                    fromAddr python:options.get('fromAddr', None) or view.request.form.get('form.fromAddr', None) or view.get_addr(adminInfo);
                    toAddr python:options.get('toAddr', None) or view.request.form.get('form.toAddr', None) or view.get_addr(userInfo);
                    invitationId options/invitationId | string:example;
-                   message options/message | view/defaultMessage | nothing">Dear <tal:block content="userInfo/name">New Member</tal:block>,
+                   message options/message | view/defaultMessage | nothing">Hello <tal:block content="userInfo/name">New Member</tal:block>,
 
 <tal:block
   define="m string:You have been invited to join ${view/groupInfo/name}. ${adminInfo/name} wrote the following message to you."
@@ -29,4 +29,3 @@ Acceptable Use
 Terms of Service
   <tal:block content="string:${view/siteInfo/url}/policies/tos"/>
 </tal:block>
-

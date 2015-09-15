@@ -34,7 +34,7 @@
            -     reminders.
            * Name-->
       <p>
-        Dear
+        Hello
         <span tal:content="toName">New Member</span>,
       </p>
       <p>
