@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2013, 2014 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2014, 2015 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,9 +12,13 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ############################################################################
-from __future__ import unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
+import sys
 from textwrap import TextWrapper
-from urllib import quote
+if sys.version_info >= (3, ):  # pragma: no cover
+    from urllib.parse import quote
+else:  # Python 2
+    from urllib import quote
 from zope.cachedescriptors.property import Lazy
 from gs.content.email.base import GroupEmail, TextMixin
 from gs.core import to_unicode_or_bust
@@ -41,7 +45,7 @@ class InvitationMessageMixin(object):
         m = 'Hi,\n\nI received an invitation to join the group {0}\n    '\
             '{1}\nand...'
         msg = m.format(self.groupInfo.name, self.groupInfo.url)
-        mailto = 'mailto:{email}?Subject={subject}&body={body}'
+        mailto = 'mailto:{email}?subject={subject}&body={body}'
         retval = mailto.format(email=self.siteInfo.get_support_email(),
                                subject=quote(sub.encode(UTF8)),
                                body=quote(msg.encode(UTF8)))
