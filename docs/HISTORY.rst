@@ -1,6 +1,11 @@
 Changelog
 =========
 
+5.2.4 (2016-01-19)
+------------------
+
+* Following the updated WYMeditor code
+
 5.2.3 (2015-09-21)
 ------------------
 
@@ -203,4 +208,4 @@ Changelog
 
 * Initial release
 
-..  LocalWords:  Changelog GitHub reStructuredText
+..  LocalWords:  Changelog GitHub reStructuredText WYMeditor
