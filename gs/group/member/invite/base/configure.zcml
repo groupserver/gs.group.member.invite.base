@@ -22,11 +22,11 @@
     class=".invite.InviteEditProfileForm"
     permission="zope2.ManageUsers"/>
   <browser:resource
-      name="gs-profile-invite-base-new-20140127.js"
+      name="gs-profile-invite-base-new-20160121.js"
       file="browser/javascript/edit_profile_invite.js"
       permission="zope2.Public" />
   <browser:resource
-      name="gs-profile-invite-base-new-min-20140127.js"
+      name="gs-profile-invite-base-new-min-20160121.js"
       file="browser/javascript/edit_profile_invite-min.js"
       permission="zope2.Public" />
 

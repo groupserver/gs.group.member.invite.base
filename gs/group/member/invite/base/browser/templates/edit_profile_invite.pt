@@ -138,7 +138,7 @@
     </form>
     <tal:block metal:fill-slot="javascript">
       <script type="text/javascript"
-              src="/++resource++gs-profile-invite-base-new-20140127.js"
+              src="/++resource++gs-profile-invite-base-new-min-20160121.js"
               defer="true"> </script>
       <script class="gs-content-js-wymeditor"
               type="text/javascript"
