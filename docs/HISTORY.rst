@@ -1,10 +1,11 @@
 Changelog
 =========
 
-5.2.4 (2016-01-19)
+5.2.4 (2016-01-21)
 ------------------
 
 * Following the updated WYMeditor code
+* Switching to *strict* mode for the JavaScript
 
 5.2.3 (2015-09-21)
 ------------------
